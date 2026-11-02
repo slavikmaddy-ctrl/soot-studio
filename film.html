@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Case file — Soot Studio vault</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='31' fill='%23211a12'/%3E%3Ccircle cx='32' cy='32' r='28' fill='none' stroke='%23c23b22' stroke-width='4'/%3E%3Ctext x='32' y='45' font-size='30' font-family='Georgia' font-weight='bold' text-anchor='middle' fill='%23f7f0dd'%3ES.%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bevan&family=Courier+Prime&family=Limelight&family=Special+Elite&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css?v=40">
+<style>html.ink-cover{background:#211a12}</style>
+<script>try{if(sessionStorage.getItem('soot-ink')==='1')document.documentElement.classList.add('ink-cover')}catch(e){}</script>
+<link rel="prefetch" href="index.html">
+<link rel="prefetch" href="work.html">
+<link rel="prefetch" href="about.html">
+<link rel="prefetch" href="capabilities.html">
+<link rel="prefetch" href="contact.html">
+<link rel="prefetch" href="film.html">
+<script type="speculationrules">{"prefetch":[{"source":"document","where":{"href_matches":"/*"},"eagerness":"moderate"}]}</script>
+</head>
+<body data-page="1">
+
+<div class="grain" aria-hidden="true"></div>
+<svg id="wipe" class="wipe" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+  <g id="wipeBlob">
+    <path fill="#211a12" class="w-blob" d="M50 4 C 62 -2 74 6 76 16 C 88 18 96 30 90 40 C 100 50 96 66 86 70 C 86 82 72 90 62 84 C 52 96 34 94 28 84 C 14 84 6 72 12 62 C 0 52 4 34 16 30 C 16 18 30 8 40 12 C 43 6 46 4 50 4 Z"/>
+    <circle class="w-dot w-dot1" fill="#211a12" r="2.4" cx="16" cy="20"/>
+    <circle class="w-dot w-dot2" fill="#211a12" r="1.6" cx="86" cy="24"/>
+  </g>
+</svg>
+
+<aside class="rail">
+  <a class="rail-logo" href="index.html" data-page="0" aria-label="Soot Studio">S.</a>
+  <nav class="rail-nav" aria-label="Site pages">
+    <a href="index.html"   data-page="0"><i>01</i><span>Main page</span></a>
+    <a href="work.html"    data-page="1" class="is-active"><i>02</i><span>Work</span></a>
+    <a href="about.html"   data-page="2"><i>03</i><span>About</span></a>
+    <a href="capabilities.html" data-page="3"><i>04</i><span>Capabilities</span></a>
+    <a href="contact.html" data-page="4"><i>05</i><span>Contact</span></a>
+  </nav>
+  <div class="rail-tail">
+    <span class="rail-reel" id="reelCounter">REEL 02<i>/05</i></span>
+    <div class="rail-stamps" id="railStamps" title="Stamp collection" aria-label="Stamp collection"></div>
+    <button class="rail-proj" id="projBtn" title="OLD PROJECTOR mode" aria-label="Old projector mode">PROJ</button>
+    <button class="rail-dice" id="diceBtn" title="The Dice demand a picture" aria-label="Roll the dice for a random film"></button>
+    <button class="rail-onair" id="onairBtn" title="ON AIR — the house jazz, est. 1917" aria-label="ON AIR jazz toggle" aria-pressed="false"><span class="lamp"></span><b>ON AIR</b></button>
+    <button class="rail-pinky" id="parryEgg" title="Parry!" aria-label="Parry bonus">
+      <img src="assets/egg-parried-bullet.png?v=40" alt="" width="24" height="24">
+    </button>
+  </div>
+</aside>
+
+<main id="track" class="track" tabindex="-1">
+  <section class="panel">
+    <span class="panel-no" aria-hidden="true">№2·A<br><em>THE CASE FILE</em></span>
+    <header class="p-head">
+      <h2 class="p-title rv" style="font-size:clamp(30px,4.6vw,52px)">CASE&nbsp;FILE <small>HOW&nbsp;IT&nbsp;WAS&nbsp;INKED</small></h2>
+    </header>
+
+    <div class="case-grid">
+      <div id="filmArticle" class="case-sheet rv" style="--d:.1s">
+        <p class="case-kicker" id="caseKicker">…loading the reel…</p>
+        <h3 class="case-title" id="caseTitle">—</h3>
+        <p class="case-meta" id="caseMeta">—</p>
+        <div class="case-frame" id="caseFrame"></div>
+        <div class="case-row">
+          <a class="btn btn--red" id="caseWatch" href="#" target="_blank" rel="noopener">PLAY ORIGINAL <span class="arr">▶</span></a>
+          <span id="caseRuntime" style="font-size:12px;color:#5a4f3d"></span>
+        </div>
+        <div class="case-body" id="caseBody"></div>
+      </div>
+
+      <aside class="case-next">
+        <b>UP NEXT IN THE VAULT</b>
+        <div id="nextList"></div>
+        <div class="case-trivia" id="caseTrivia"></div>
+        <div class="case-fact rv" style="--d:.2s" id="caseFact">
+          ★ HOUSE FACT — one second of finished picture is 24 drawings. A single minute keeps 12 inkwells busy for a week.
+        </div>
+        <div class="case-placard" id="casePlacard"></div>
+      </aside>
+    </div>
+
+    <p class="case-back rv">← back to <a href="work.html" data-page="1">the showreel</a></p>
+  </section>
+</main>
+
+<!-- film leader: the projector is threaded before every first case of the session -->
+<div id="leader" class="leader" aria-hidden="true">
+  <div class="leader-disc"><span></span><b id="leaderNum">3</b></div>
+  <p class="leader-cap">SOOT VAULT · THREAD THE PROJECTOR · CASE FILE</p>
+</div>
+
+<script src="js/main.js?v=40"></script>
+</body>
+</html>
