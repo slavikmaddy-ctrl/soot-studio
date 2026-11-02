@@ -64,9 +64,9 @@ Node.js + Express 5, база PostgreSQL 18. API живёт до статики,
   ```
   node --env-file=.env read-wires.mjs
   ```
-- **Через psql** (пароль пользователя postgres):
+- **Через psql** (пароль администратора postgres — твой личный, в README его писать нельзя):
   ```powershell
-  $env:PGPASSWORD='000'
+  $env:PGPASSWORD='<твой пароль postgres>'
   & "C:\Program Files\PostgreSQL\18\bin\psql.exe" -h localhost -U postgres -d soot_studio -c "SELECT id, name, email, body, created_at FROM wires ORDER BY id DESC LIMIT 10;"
   ```
 - **Через pgAdmin** (если установлен): сервер PostgreSQL 18 → база `soot_studio` → Schemas → public → Tables → `wires` / `visits` / `parry_scores` → ПКМ → View/Edit Data → All Rows.

@@ -1,6 +1,7 @@
 # the vault's own business — never in the film archive
 node_modules/
 .env
+.pg-admin.txt
 .server-log
 .server-err
 .server-pid
