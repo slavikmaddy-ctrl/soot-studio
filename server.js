@@ -60,6 +60,15 @@ app.use('/api', (req, res, next) => {
   next();
 });
 
+/* --- one true address: when CANONICAL_HOST is set, every other door politely sends the street there --- */
+const CANONICAL_HOST = (process.env.CANONICAL_HOST || '').toLowerCase();
+app.use((req, res, next) => {
+  if (CANONICAL_HOST && (req.headers.host || '').toLowerCase() !== CANONICAL_HOST) {
+    return res.redirect(301, 'https://' + CANONICAL_HOST + req.originalUrl);
+  }
+  next();
+});
+
 app.get('/api/health', (req, res) => res.json({ ok: true, pid: process.pid, up: Math.round(process.uptime()) }));
 
 /* --- the house rule: a guest may only tap the key so fast --- */
