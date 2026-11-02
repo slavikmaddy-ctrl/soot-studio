@@ -1,0 +1,6 @@
+# every reel is open to the street; the desk keeps its ledgers to itself
+User-agent: *
+Allow: /
+Disallow: /api/
+
+Sitemap: https://soot-studio.onrender.com/sitemap.xml
