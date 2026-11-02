@@ -1,8 +1,11 @@
 # the vault's own business — never in the film archive
 node_modules/
 .env
+.env.local
+.env.bak
 .pg-admin.txt
 .server-log
 .server-err
 .server-pid
 qa-api.ps1
+.neon

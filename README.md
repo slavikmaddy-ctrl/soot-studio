@@ -21,7 +21,8 @@ soot-studio/
 ├── css/style.css      — стиль: плоские цвета, жёсткие тени, без градиентов
 ├── js/main.js         — движок: переходы-вайпы, горизонтальный скролл, lazy-load, интро, звук
 ├── server.js          — Express-сервер: статика + API сейфа (PostgreSQL)
-├── package.json       — npm start = node --env-file=.env server.js
+├── package.json       — npm run build (проверка синтаксиса) / npm start = node --env-file-if-exists=.env server.js
+├── neon.ts            — политика Neon-сервисов (postgres): `neon deploy` провижинит их и подтянет DATABASE_URL в .env
 ├── read-wires.mjs     — локальный «ящик стола»: открыть запечатанные адреса проводов
 ├── .env               — PORT + DATABASE_URL + WIRE_KEY (секреты, в git не попадают)
 └── assets/            — ассеты из интернета (вики Cuphead / Fandom / wiki.gg, © StudioMDHR — как трибьют)
@@ -56,7 +57,7 @@ Node.js + Express 5, база PostgreSQL 18. API живёт до статики,
 Таблицы в базе `soot_studio`: `wires(name, body, created_at)`, `visits(session_id UNIQUE)`, `parry_scores(name, score CHECK>=0)`.
 
 Запуск:
-- Служба PostgreSQL 18 запущена; в корне проекта `.env`: `PORT=3188` и `DATABASE_URL=postgres://soot:<пароль>@127.0.0.1:5432/soot_studio` (роль `soot` имеет только SELECT/INSERT).
+- В корне проекта `.env`: `PORT=3188`, `DATABASE_URL` (по умолчанию — облачный сейф **Neon**, ветка `production`; для чисто локальной базы подставь свой URL вида `postgres://soot:…@127.0.0.1:5432/soot_studio`, роль `soot` — только SELECT/INSERT) и `WIRE_KEY` (ключ AES-256-GCM).
 - `npm start` → http://localhost:3188. База легла — API отвечает 503 «the vault desk is closed», сайт продолжает работать без сейфа.
 
 ### Как заглянуть в сейф
@@ -74,20 +75,26 @@ Node.js + Express 5, база PostgreSQL 18. API живёт до статики,
 Каждый стук по API пишется в лог сервера (`POST /api/wire -> 201` — файл `.server-log` рядом с проектом).
 
 ## Деплой бесплатно (Render + Neon)
-Всё живёт на $0 и без карты: сайт + API — **Render** (web service), база — **Neon**.
+Всё живёт на $0 и без карты: сайт + API — **Render** (web service), база — **Neon** (проект «Soot-Studio», ветка `production`).
 
-1. **Neon** (neon.tech, без карты): New Project → скопируй `Connection string` (вида `postgres://...neon.tech/...`).
-2. Залей код на GitHub (`.env`, `node_modules`, `.server-*` в git не попадают — прикрывает `.gitignore`).
-3. **Render** (render.com, без карты): New → Web Service → подключи GitHub-репозиторий:
+**Neon уже подключён**: в корне лежит `neon.ts` — политика сервисов (только Postgres, `auth: false`). Облачные команды:
+```
+neon deploy      # провижинит сервисы из neon.ts и подтянет DATABASE_URL + DATABASE_URL_UNPOOLED в .env
+npm run build    # проверка синтаксиса перед выкладкой
+npm start        # три таблицы строятся сами при первом старте (auto-ensure в server.js)
+```
+
+1. Залей код на GitHub (`.env`, `.env.local`, `.env.bak`, `.pg-admin.txt`, `node_modules`, `.server-*` в git не попадают — прикрывает `.gitignore`).
+2. **Render** (render.com, без карты): New → Web Service → подключи GitHub-репозиторий:
    - Build command: `npm install`
    - Start command: `npm start`
    - Environment variables:
      | Ключ | Значение |
      |---|---|
-     | `DATABASE_URL` | строка подключения из Neon |
+     | `DATABASE_URL` | строка из Neon (уже лежит в локальном `.env`) |
      | `WIRE_KEY` | тот же ключ, что в локальном `.env` |
    - `PORT` Render подставит сам, `HOST` сервер сам переводит на `0.0.0.0` (видит флаг `RENDER=true`).
-4. Таблицы создаются сами при первом старте (auto-ensure в `server.js`) — SQL руками писать не нужно.
+3. SQL руками писать не нужно — при первом старте сервер сам строит таблицы.
 
 Нюансы бесплатности: Render засыпает после 15 минут тишины (первое открытие будит его около минуты); Neon уходит в scale-to-zero и просыпается на первом запросе. Секреты (`WIRE_KEY`, пароль базы) в git не попадают — их вводят только в дашбордах.
 
