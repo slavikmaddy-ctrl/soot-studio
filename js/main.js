@@ -162,6 +162,12 @@
   window.addEventListener('wheel', (e) => {
     if (touchScroll) return;
     if (document.getElementById('intro')) return;
+    const panel = e.target && e.target.closest ? e.target.closest('.panel') : null;
+    if (panel && panel.scrollHeight > panel.clientHeight + 4) {
+      const down = e.deltaY > 0;
+      const canScroll = down ? panel.scrollTop + panel.clientHeight < panel.scrollHeight - 1 : panel.scrollTop > 1;
+      if (canScroll) return;          // panel still has vertical room: native scroll wins
+    }
     if (maxX <= 0) return;
     const d = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY;
     xTarget = Math.min(maxX, Math.max(0, xTarget + d));
