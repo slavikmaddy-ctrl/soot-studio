@@ -3,4 +3,4 @@ User-agent: *
 Allow: /
 Disallow: /api/
 
-Sitemap: https://soot-studio.onrender.com/sitemap.xml
+Sitemap: https://soot-studio.ru/sitemap.xml
