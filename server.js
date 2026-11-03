@@ -161,6 +161,13 @@ app.get('/html/:page', (req, res) => {
   res.status(404).sendFile(path.join(here, 'html', '404.html'));
 });
 
+app.get(/^\/yandex_[a-z0-9]+\.html$/i, (req, res) => {
+  const name = req.path.split('/').pop();
+  res.sendFile(path.join(here, 'html', name), (err) => {
+    if (err) res.status(404).sendFile(path.join(here, 'html', '404.html'));
+  });
+});
+
 app.use((req, res) => res.status(404).sendFile(path.join(here, 'html', '404.html')));
 
 app.listen(PORT, HOST, () => console.log('[soot] the projector hums on ' + HOST + ':' + PORT));
