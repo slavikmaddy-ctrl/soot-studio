@@ -161,7 +161,7 @@ app.get('/html/:page', (req, res) => {
   res.status(404).sendFile(path.join(here, 'html', '404.html'));
 });
 
-app.get(/^\/yandex_[a-z0-9]+\.html$/i, (req, res) => {
+app.get(/^\/(yandex_[a-z0-9]+|google[a-z0-9]+)\.html$/i, (req, res) => {
   const name = req.path.split('/').pop();
   res.sendFile(path.join(here, 'html', name), (err) => {
     if (err) res.status(404).sendFile(path.join(here, 'html', '404.html'));
