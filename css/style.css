@@ -1062,4 +1062,5 @@ body.onair .rail-onair .lamp{
 
 body{cursor:url("../assets/cursor-point.png") 5 2, default}
 a,button,[role="button"],.film-frame,.film-case,.faq-q,.rail-pinky,.rail-tools{cursor:url("../assets/cursor-two.png") 8 3, pointer}
+.tg-send{cursor:url("../assets/cursor-heart.png") 14 10, pointer}
 input,textarea,select{cursor:text}
