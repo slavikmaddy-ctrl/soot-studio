@@ -758,7 +758,8 @@ body.old-proj .grain{opacity:.14}
 
 @media (max-height:740px){
   .rail-nav{gap:8px;padding:6px 0}
-  .rail-nav a{writing-mode:horizontal-tb;padding:4px 5px}
+  .rail-nav a{writing-mode:horizontal-tb;padding:4px 5px;transform:none}
+  .rail-nav a:hover{transform:translateY(2px);color:var(--cream)}
   .rail-nav a span{
     position:absolute;width:1px;height:1px;margin:-1px;overflow:hidden;
     clip:rect(0 0 0 0);white-space:nowrap;
@@ -1005,3 +1006,36 @@ body.onair .rail-onair .lamp{
 .peek-list{margin:0 0 4px;padding-left:18px;font-size:13.5px;line-height:1.6}
 .peek-foot{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:14px}
 @media (prefers-reduced-motion:reduce){.peek-screen,.peek-card,.faq-a,.film-top{transition:none}}
+
+@media (max-width:820px){
+  .rail-nav a{writing-mode:horizontal-tb;text-orientation:mixed;transform:none;padding:4px 3px}
+  .rail-nav a:hover{transform:translateY(2px)}
+  .rail-nav a span{
+    position:absolute;width:1px;height:1px;margin:-1px;overflow:hidden;
+    clip:rect(0 0 0 0);white-space:nowrap;
+  }
+}
+@media (max-width:640px){
+  .panel{padding:74px 20px 96px 20px}
+  .panel-no{top:14px;right:14px;font-size:24px}
+  .panel-no em{font-size:8px;letter-spacing:.18em;margin-top:2px}
+  .p-title{font-size:clamp(30px,8.4vw,44px);text-shadow:3px 3px 0 var(--red)}
+  .p-lede{font-size:13.5px}
+  .hero-soot{font-size:clamp(58px,16.5vw,84px)}
+  .hero-band{font-size:clamp(14px,4.6vw,20px);letter-spacing:.3em;padding:8px 18px 5px 22px}
+  .hero-tag{font-size:14px}
+  .hero-cta{gap:12px;margin-top:22px}
+  .hero-stamp{width:78px;top:-14px;right:0}
+  .hero-cast{opacity:.4;width:52vw;right:-34px;bottom:64px}
+  .scroll-cue{display:none}
+  .ticker{bottom:34px}
+  .ticker-strip{font-size:11px;letter-spacing:.1em;padding:8px 0}
+  .foot,.cap-foot,.panel-foot{font-size:12px}
+  .film-peek{opacity:1;transform:none}
+  .film-top{left:calc(var(--rail) + 10px);bottom:10px;font-size:10px;letter-spacing:.1em;padding:8px 10px 6px}
+  .megaphone{right:10px;bottom:10px;max-width:220px}
+  .faq-q{font-size:12.5px;padding:11px 12px 9px}
+  .faq-a p{font-size:12.5px;padding:2px 12px 13px}
+  .wire-search input{font-size:12px}
+  .peek-card{padding:16px 16px 14px}
+}

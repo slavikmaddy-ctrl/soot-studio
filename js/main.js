@@ -5,7 +5,7 @@
   const $  = (s, c) => (c || document).querySelector(s);
   const $$ = (s, c) => Array.from((c || document).querySelectorAll(s));
 
-  const PAGE_URLS = ['/index.html', '/work.html', '/about.html', '/capabilities.html', '/contact.html'];
+  const PAGE_URLS = ['index.html', 'work.html', 'about.html', 'capabilities.html', 'contact.html'];
   const rebound = document.body.dataset.page | 0;          // 0..4
   const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
   // site entry detector: the first page load of this browsing session plays
@@ -557,7 +557,7 @@
       sessionStorage.setItem('soot-ink-y', e.clientY || window.innerHeight / 2);
       aimWipe(e.clientX || window.innerWidth / 2, e.clientY || window.innerHeight / 2);
       wipe.classList.add('on', 'wipe--in');
-      setTimeout(() => { location.href = '/film.html?f=' + slug; }, reduced ? 20 : 300);
+      setTimeout(() => { location.href = 'film.html?f=' + slug; }, reduced ? 20 : 300);
     });
     const play = card.querySelector('.film-play');
     if (play && play.dataset.yt) play.addEventListener('click', (e) => {
@@ -583,7 +583,7 @@
     sessionStorage.setItem('soot-ink-y', e.clientY || window.innerHeight / 2);
     aimWipe(e.clientX || window.innerWidth / 2, e.clientY || window.innerHeight / 2);
     wipe.classList.add('on', 'wipe--in');
-    setTimeout(() => { location.href = '/film.html?f=' + el.dataset.filmLink; }, reduced ? 20 : 300);
+    setTimeout(() => { location.href = 'film.html?f=' + el.dataset.filmLink; }, reduced ? 20 : 300);
   }));
 
     (function typewriterCaret() {
@@ -1205,7 +1205,7 @@
           sessionStorage.setItem('soot-ink-y', (window.innerHeight / 2).toFixed(0));
           aimWipe(window.innerWidth - 130, window.innerHeight / 2);
           wipe.classList.add('on', 'wipe--in');
-          setTimeout(() => { location.href = '/film.html?f=' + slug; }, reduced ? 20 : 300);
+          setTimeout(() => { location.href = 'film.html?f=' + slug; }, reduced ? 20 : 300);
         }, 1500);
       }, 950);
     });
@@ -1465,7 +1465,7 @@
         '</div>' +
         (pts.length ? '<ul class="peek-list">' + pts.map((t) => '<li>' + t + '</li>').join('') + '</ul>' : '') +
         (f.verdict ? '<div class="case-verdict"><b class="vg">' + f.verdict.grade + '</b><div><i>' + f.verdict.stamp + '</i><span>' + f.verdict.line + '</span></div></div>' : '') +
-        '<div class="peek-foot"><a class="btn btn--red" href="/film.html?f=' + slug + '">FULL CASE FILE <span class="arr">→</span></a>' +
+        '<div class="peek-foot"><a class="btn btn--red" href="film.html?f=' + slug + '">FULL CASE FILE <span class="arr">→</span></a>' +
         '<button class="btn peek-close" type="button">CLOSE ×</button></div>';
       scr = backdrop;
       document.body.appendChild(backdrop);
