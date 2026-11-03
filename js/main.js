@@ -142,6 +142,7 @@
     track.style.transform = 'translate3d(' + (-x) + 'px,0,0)' + (skewT ? ' skewX(' + skewT.toFixed(3) + 'deg)' : '');
     revealPass();
     if (extrasFrame) extrasFrame(vel);
+    if (scrubTick) scrubTick();
     requestAnimationFrame(frame);
   }
   let skewT = 0;
@@ -1323,4 +1324,167 @@
       gone: !document.body.contains(intro)
     }) };
   }
+
+  (function cascade() {
+    $$('.panel').forEach((p) => {
+      $$('.rv', p).forEach((el, i) => {
+        if (!el.style.getPropertyValue('--d')) el.style.setProperty('--d', (i * 0.07).toFixed(2) + 's');
+      });
+    });
+  })();
+
+  (function daynight() {
+    const tail = $('.rail-tail');
+    if (!tail) return;
+    const btn = document.createElement('button');
+    btn.className = 'rail-night';
+    btn.type = 'button';
+    btn.title = 'DAY / NIGHT — switch the shop lamps';
+    btn.setAttribute('aria-label', 'Toggle day or night look');
+    tail.appendChild(btn);
+    const paint = () => {
+      const on = document.documentElement.classList.contains('night-shift');
+      btn.textContent = on ? '☼' : '☾';
+      btn.classList.toggle('on', on);
+      btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+    };
+    const saved = LS.get('soot-night', null);
+    if (saved != null) {
+      document.documentElement.classList.toggle('night-shift', saved === 1);
+    } else {
+      const h = new Date().getHours();
+      document.documentElement.classList.toggle('night-shift', h >= 20 || h < 6);
+    }
+    paint();
+    let taught = false;
+    btn.addEventListener('click', () => {
+      cue('click');
+      const on = document.documentElement.classList.toggle('night-shift');
+      LS.set('soot-night', on ? 1 : 0);
+      paint();
+      if (!taught) {
+        taught = true;
+        megSay(on ? 'NIGHT SHIFT! THE PAPER CHANGES ITS INK TONE.' : 'DAY SHIFT! MORNING PUTS THE PAPER BACK.', 4600);
+      }
+    });
+  })();
+
+  let scrubTick = null;
+  (function scrub() {
+    const bar = document.createElement('div');
+    bar.className = 'film-scrub';
+    bar.setAttribute('aria-hidden', 'true');
+    const fill = document.createElement('i');
+    bar.appendChild(fill);
+    document.body.appendChild(bar);
+    const up = document.createElement('button');
+    up.className = 'film-top';
+    up.type = 'button';
+    up.innerHTML = '<b>⌃</b> REWIND TO REEL №01';
+    document.body.appendChild(up);
+    let shown = false;
+    scrubTick = function () {
+      const p = maxX > 400 ? Math.min(1, Math.max(0, x / maxX)) : 0;
+      bar.classList.toggle('on', p > 0.12);
+      fill.style.width = (p * 100).toFixed(2) + '%';
+      const want = p > 0.25;
+      if (want !== shown) { shown = want; up.classList.toggle('on', want); }
+    };
+    up.addEventListener('click', () => {
+      cue('click');
+      xTarget = 0;
+    });
+  })();
+
+  (function rackFilter() {
+    const list = $('#wireLog');
+    const inp = $('#wireSearch');
+    if (!list || !inp) return;
+    const paint = renderWires;
+    let rows = [];
+    renderWires = function (r) {
+      rows = Array.isArray(r) ? r : [];
+      draw();
+    };
+    function draw() {
+      const q = inp.value.trim().toLowerCase();
+      if (!rows.length) return;
+      const hit = !q ? rows : rows.filter((w) =>
+        String(w.name || '').toLowerCase().indexOf(q) !== -1 ||
+        String(w.body || '').toLowerCase().indexOf(q) !== -1 ||
+        String(w.email || '').toLowerCase().indexOf(q) !== -1);
+      if (hit.length) { paint(hit); return; }
+      list.textContent = '';
+      const li = document.createElement('li');
+      li.className = 'wire-empty';
+      li.textContent = 'no wire on the rack matches — loosen the sift';
+      list.appendChild(li);
+    }
+    inp.addEventListener('input', draw);
+  })();
+
+  (function faqOpen() {
+    $$('.faq-q').forEach((b) => {
+      b.addEventListener('click', () => {
+        const item = b.closest('.faq');
+        const nowOpen = item.classList.toggle('open');
+        b.setAttribute('aria-expanded', nowOpen ? 'true' : 'false');
+        if (nowOpen) cue('type');
+      });
+    });
+  })();
+
+  (function peek() {
+    const cards = $$('.film[data-film]');
+    if (!cards.length) return;
+    let scr = null;
+    function close() {
+      if (!scr) return;
+      const node = scr;
+      node.classList.remove('on');
+      setTimeout(() => { try { node.remove(); } catch (e) {} }, 280);
+      document.removeEventListener('keydown', esc);
+      scr = null;
+    }
+    function esc(e) { if (e.key === 'Escape') close(); }
+    function open(slug) {
+      const f = FILMS[slug];
+      if (!f) return;
+      close();
+      const backdrop = document.createElement('div');
+      backdrop.className = 'peek-screen';
+      const pts = (f.body && f.body[0] && f.body[0][1]) ? f.body[0][1].slice(0, 3) : [];
+      backdrop.innerHTML =
+        '<div class="peek-card">' +
+        '<div class="peek-kick">' + (f.studio + ' · ' + f.year).toUpperCase() + '</div>' +
+        '<h3 class="peek-title">' + f.title + '</h3>' +
+        '<p class="peek-meta">' + f.meta + '</p>' +
+        '<div class="peek-frame">' + (f.yt
+          ? '<img referrerpolicy="no-referrer" src="' + f.img + '" alt="' + f.title + '">'
+          : '<video controls loop muted playsinline src="' + f.mp4 + '"></video>') +
+        '</div>' +
+        (pts.length ? '<ul class="peek-list">' + pts.map((t) => '<li>' + t + '</li>').join('') + '</ul>' : '') +
+        (f.verdict ? '<div class="case-verdict"><b class="vg">' + f.verdict.grade + '</b><div><i>' + f.verdict.stamp + '</i><span>' + f.verdict.line + '</span></div></div>' : '') +
+        '<div class="peek-foot"><a class="btn btn--red" href="/film.html?f=' + slug + '">FULL CASE FILE <span class="arr">→</span></a>' +
+        '<button class="btn peek-close" type="button">CLOSE ×</button></div>';
+      scr = backdrop;
+      document.body.appendChild(backdrop);
+      requestAnimationFrame(() => backdrop.classList.add('on'));
+      backdrop.addEventListener('click', (e) => { if (e.target === backdrop) close(); });
+      backdrop.querySelector('.peek-close').addEventListener('click', close);
+      document.addEventListener('keydown', esc);
+      cue('click');
+      megSay('A QUICK PEEK — THE FULL DOSSIER LIVES ONE REEL DEEPER.');
+    }
+    cards.forEach((card) => {
+      const slug = card.dataset.film;
+      const b = document.createElement('button');
+      b.className = 'film-peek';
+      b.type = 'button';
+      b.textContent = 'peek';
+      b.setAttribute('aria-label', 'Quick look');
+      card.appendChild(b);
+      b.addEventListener('click', (e) => { e.stopPropagation(); open(slug); });
+    });
+  })();
 })();
