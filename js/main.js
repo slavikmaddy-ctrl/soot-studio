@@ -126,20 +126,31 @@
   });
 
     let x = 0, xTarget = 0, maxX = 0, dragging = false, dragSX = 0, dragX0 = 0;
+    const touchScroll = matchMedia('(pointer:coarse)').matches || matchMedia('(hover:none)').matches;
 
   function measure() {
     const railW = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--rail')) || 78;
     maxX = Math.max(0, track.scrollWidth - (window.innerWidth - railW));
   }
+  function seek(t) {
+    const v = Math.min(maxX, Math.max(0, t));
+    if (touchScroll) track.scrollLeft = v;
+    else xTarget = v;
+  }
   function frame() {
     const prev = x;
-    x += (xTarget - x) * (reduced ? 1 : .11);
-    if (Math.abs(xTarget - x) < .4) x = xTarget;
-    // rubber-film skew: whole reel leans with scroll speed, then springs back
+    if (touchScroll) {
+      x = xTarget = track.scrollLeft;
+      skewT = 0;
+      track.style.transform = 'none';
+    } else {
+      x += (xTarget - x) * (reduced ? 1 : .11);
+      if (Math.abs(xTarget - x) < .4) x = xTarget;
+      skewT = skewT + (Math.max(-1.6, Math.min(1.6, -((x - prev) * .022))) - skewT) * .18;
+      if (reduced) skewT = 0;
+      track.style.transform = 'translate3d(' + (-x) + 'px,0,0)' + (skewT ? ' skewX(' + skewT.toFixed(3) + 'deg)' : '');
+    }
     const vel = x - prev;
-    skewT = skewT + (Math.max(-1.6, Math.min(1.6, -vel * .022)) - skewT) * .18;
-    if (reduced) skewT = 0;
-    track.style.transform = 'translate3d(' + (-x) + 'px,0,0)' + (skewT ? ' skewX(' + skewT.toFixed(3) + 'deg)' : '');
     revealPass();
     if (extrasFrame) extrasFrame(vel);
     if (scrubTick) scrubTick();
@@ -149,6 +160,7 @@
   let extrasFrame = null;   // set by the EXTRAS section below (runner/watchers)
 
   window.addEventListener('wheel', (e) => {
+    if (touchScroll) return;
     if (document.getElementById('intro')) return;
     if (maxX <= 0) return;
     const d = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY;
@@ -157,6 +169,7 @@
   }, { passive: false });
 
   track.addEventListener('pointerdown', (e) => {
+    if (touchScroll) return;
     if (e.target.closest('a,button,input,textarea,video,form')) return;
     dragging = true; dragSX = e.clientX; dragX0 = x; track.setPointerCapture(e.pointerId);
     track.classList.add('is-drag');
@@ -171,10 +184,10 @@
 
   window.addEventListener('keydown', (e) => {
     if (document.getElementById('intro')) return;
-    if (e.key === 'ArrowRight' || e.key === 'PageDown') { e.preventDefault(); xTarget = Math.min(maxX, x + window.innerWidth * .8); }
-    if (e.key === 'ArrowLeft' || e.key === 'PageUp')   { e.preventDefault(); xTarget = Math.max(0, x - window.innerWidth * .8); }
-    if (e.key === 'Home') { xTarget = 0 }
-    if (e.key === 'End')  { xTarget = maxX }
+    if (e.key === 'ArrowRight' || e.key === 'PageDown') { e.preventDefault(); seek(x + window.innerWidth * .8); }
+    if (e.key === 'ArrowLeft' || e.key === 'PageUp')   { e.preventDefault(); seek(x - window.innerWidth * .8); }
+    if (e.key === 'Home') { seek(0) }
+    if (e.key === 'End')  { seek(maxX) }
   });
 
     const rvs  = $$('.rv');
@@ -1439,7 +1452,7 @@
     };
     up.addEventListener('click', () => {
       cue('click');
-      xTarget = 0;
+      seek(0);
     });
   })();
 

@@ -1063,4 +1063,17 @@ body.onair .rail-onair .lamp{
 body{cursor:url("../assets/cursor-point.png") 5 2, default}
 a,button,[role="button"],.film-frame,.film-case,.faq-q,.rail-pinky,.rail-tools{cursor:url("../assets/cursor-two.png") 8 3, pointer}
 .tg-send{cursor:url("../assets/cursor-heart.png") 14 10, pointer}
+
+@media (pointer:coarse), (hover:none){
+  .track{
+    overflow-x:auto;overflow-y:hidden;
+    touch-action:pan-x pan-y;
+    scroll-snap-type:x proximity;
+    overscroll-behavior-x:contain;
+    scrollbar-width:none;
+  }
+  .track::-webkit-scrollbar{display:none}
+  .panel{scroll-snap-align:start;padding-bottom:calc(96px + env(safe-area-inset-bottom,0px))}
+  .rail-tail{padding-bottom:calc(14px + env(safe-area-inset-bottom,0px))}
+}
 input,textarea,select{cursor:text}
