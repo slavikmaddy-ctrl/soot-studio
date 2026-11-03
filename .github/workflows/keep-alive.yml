@@ -1,0 +1,16 @@
+name: keep-alive
+
+on:
+  schedule:
+    - cron: "*/10 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: wake the projector
+        run: curl -fsS --max-time 60 https://soot-studio.ru/api/health
