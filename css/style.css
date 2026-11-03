@@ -1039,3 +1039,22 @@ body.onair .rail-onair .lamp{
   .wire-search input{font-size:12px}
   .peek-card{padding:16px 16px 14px}
 }
+
+.rail-tools{
+  width:34px;height:34px;border:2px solid #cfc4a6;border-radius:50%;color:#cfc4a6;background:none;
+  font-size:15px;line-height:1;padding:0;cursor:pointer;flex:0 0 auto;
+  transition:transform .25s var(--bezier),color .2s,border-color .2s,background .2s;
+}
+.rail-tools:hover{transform:rotate(-12deg) scale(1.14);color:var(--cream);border-color:var(--cream)}
+.rail-tools.on{background:var(--red);border-color:var(--cream);color:var(--cream)}
+.rail-pop{
+  position:fixed;left:calc(var(--rail,78px) + 14px);bottom:18px;z-index:940;
+  display:flex;flex-direction:column;align-items:center;gap:10px;
+  background:var(--paper);border:3px solid var(--ink);box-shadow:var(--sh);
+  border-radius:10px;padding:14px 13px 12px;
+  transform:rotate(-1deg) translateX(-16px) scale(.9);transform-origin:bottom left;
+  opacity:0;pointer-events:none;
+  transition:opacity .3s var(--bezier),transform .38s var(--bezier);
+}
+.rail-pop.on{opacity:1;transform:rotate(-1deg) translateX(0) scale(1);pointer-events:auto}
+@media (prefers-reduced-motion:reduce){.rail-pop,.rail-tools{transition:none}}

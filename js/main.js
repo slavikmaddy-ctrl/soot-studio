@@ -1333,6 +1333,52 @@
     });
   })();
 
+  (function toolshed() {
+    const tail = $('.rail-tail');
+    if (!tail) return;
+    const pop = document.createElement('div');
+    pop.className = 'rail-pop';
+    pop.id = 'railPop';
+    pop.setAttribute('aria-label', 'The workbench');
+    ['projBtn', 'diceBtn', 'onairBtn', 'parryEgg'].forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) pop.appendChild(el);
+    });
+    const btn = document.createElement('button');
+    btn.className = 'rail-tools';
+    btn.id = 'toolsBtn';
+    btn.type = 'button';
+    btn.title = 'The workbench — projector, dice, jazz, eggs, lamps';
+    btn.setAttribute('aria-label', 'Open the workbench');
+    btn.setAttribute('aria-expanded', 'false');
+    btn.setAttribute('aria-controls', 'railPop');
+    btn.textContent = '⚒';
+    tail.appendChild(btn);
+    document.body.appendChild(pop);
+    let taught = false;
+    const paint = (open) => {
+      pop.classList.toggle('on', open);
+      btn.classList.toggle('on', open);
+      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    };
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      cue('click');
+      const open = !pop.classList.contains('on');
+      paint(open);
+      if (open && !taught) {
+        taught = true;
+        megSay('THE WORKBENCH — every toy still lives here, just tidier.');
+      }
+    });
+    document.addEventListener('click', (e) => {
+      if (pop.classList.contains('on') && !pop.contains(e.target) && e.target !== btn) paint(false);
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') paint(false);
+    });
+  })();
+
   (function daynight() {
     const tail = $('.rail-tail');
     if (!tail) return;
@@ -1341,7 +1387,8 @@
     btn.type = 'button';
     btn.title = 'DAY / NIGHT — switch the shop lamps';
     btn.setAttribute('aria-label', 'Toggle day or night look');
-    tail.appendChild(btn);
+    const shed = document.getElementById('railPop');
+    (shed || tail).appendChild(btn);
     const paint = () => {
       const on = document.documentElement.classList.contains('night-shift');
       btn.textContent = on ? '☼' : '☾';
