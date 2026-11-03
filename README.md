@@ -6,26 +6,27 @@
 **С сервером (полный опыт):** в этой папке `npm install` (один раз) → `npm start` → http://localhost:3188
 Нужна запущенная служба PostgreSQL — «сейф» хранит телеграфы, счётчик гостей и рекорды парри.
 
-**Без сервера:** откройте `index.html` в браузере — сайт полностью работает, но функции сейфа тихо отключаются (стойка проводов держит заглушку, гостевой № и домовой рекорд не показываются).
+**Без сервера:** откройте `html/index.html` в браузере — сайт полностью работает, но функции сейфа тихо отключаются (стойка проводов держит заглушку, гостевой № и домовой рекорд не показываются).
 
 ## Структура (5 отдельных страниц)
 ```
 soot-studio/
-├── index.html         — №1 Main page: интро-заставка + hero
-├── work.html          — №2 THE SHOWREEL: мультфильмы Fleischer/Disney/Iwerks (паблик-домейн)
-├── about.html         — №3 THE PORTRAIT: история, команда, «дома-кумиры» + гостевой №
-├── capabilities.html  — №4 THE INKWELL INVENTORY: цепочка навыков + этапы + мастерские
-├── contact.html       — №5 THE TELEGRAPH OFFICE: телеграф-форма «KNOCKOUT!» + стойка проводов
-├── film.html          — картотека фильмов (film.html?f=slug)
-├── 404.html           — «THE LOST REEL» (сервер отдаёт её на любых 404)
-├── css/style.css      — стиль: плоские цвета, жёсткие тени, без градиентов
-├── js/main.js         — движок: переходы-вайпы, горизонтальный скролл, lazy-load, интро, звук
-├── server.js          — Express-сервер: статика + API сейфа (PostgreSQL)
-├── package.json       — npm run build (проверка синтаксиса) / npm start = node --env-file-if-exists=.env server.js
-├── neon.ts            — политика Neon-сервисов (postgres): `neon deploy` провижинит их и подтянет DATABASE_URL в .env
-├── read-wires.mjs     — локальный «ящик стола»: открыть запечатанные адреса проводов
-├── .env               — PORT + DATABASE_URL + WIRE_KEY (секреты, в git не попадают)
-└── assets/            — ассеты из интернета (вики Cuphead / Fandom / wiki.gg, © StudioMDHR — как трибьют)
+├── html/                — все страницы (сервер отдаёт их по адресам корня)
+│   ├── index.html       — №1 Main page: интро-заставка + hero
+│   ├── work.html        — №2 THE SHOWREEL: мультфильмы Fleischer/Disney/Iwerks (паблик-домейн)
+│   ├── about.html       — №3 THE PORTRAIT: история, команда, «дома-кумиры» + гостевой №
+│   ├── capabilities.html— №4 THE INKWELL INVENTORY: цепочка навыков + этапы + мастерские
+│   ├── contact.html     — №5 THE TELEGRAPH OFFICE: телеграф-форма «KNOCKOUT!» + стойка проводов
+│   ├── film.html        — картотека фильмов (film.html?f=slug)
+│   └── 404.html         — «THE LOST REEL» (сервер отдаёт её на любых 404)
+├── css/style.css        — стиль: плоские цвета, жёсткие тени, без градиентов
+├── js/main.js           — движок: переходы-вайпы, горизонтальный скролл, lazy-load, интро, звук
+├── assets/              — ассеты из интернета (вики Cuphead / Fandom / wiki.gg, © StudioMDHR — как трибьют)
+├── server.js            — Express-сервер: html/ + css/ + js/ + assets/ по своим адресам, API сейфа (PostgreSQL)
+├── package.json         — npm run build (проверка синтаксиса) / npm start = node --env-file-if-exists=.env server.js
+├── neon.ts              — политика Neon-сервисов (postgres): `neon deploy` провижинит их и подтянет DATABASE_URL в .env
+├── read-wires.mjs       — локальный «ящик стола»: открыть запечатанные адреса проводов
+└── .env                 — PORT + DATABASE_URL + WIRE_KEY (секреты, в git не попадают)
 ```
 
 ## Что внутри

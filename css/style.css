@@ -1,7 +1,3 @@
-/* ============================================================
-   SOOT STUDIO — animaton-e-house stylesheet (1934)
-   Flat ink & paper only: no blur, no glass, no colour slops.
-   ============================================================ */
 :root{
   --paper:#f0e5cc;  --paper2:#e8dab8;  --cream:#f7f0dd;
   --ink:#211a12;    --red:#c23b22;     --gold:#d9a441;  --teal:#48766b;
@@ -15,8 +11,7 @@ body{
   background:var(--paper);color:var(--ink);
   font-family:"Special Elite","Courier New",monospace;
   font-size:16px;line-height:1.55;
-  overflow:hidden;                       /* film never rolls vertically */
-  /* the dip pen rides the pointer everywhere; hotspot sits on the nib tip */
+  overflow:hidden;
   cursor:url("data:image/svg+xml;charset=utf-8,<svg xmlns='http://www.w3.org/2000/svg' width='30' height='30' viewBox='0 0 30 30'><line x1='9.5' y1='9.5' x2='26' y2='26' stroke='%23f7f0dd' stroke-width='8' stroke-linecap='round'/><line x1='9.5' y1='9.5' x2='26' y2='26' stroke='%23211a12' stroke-width='5' stroke-linecap='round'/><line x1='17.8' y1='24.2' x2='24.2' y2='17.8' stroke='%23c23b22' stroke-width='2.6'/><path d='M2 2 L12.5 6.5 L6.5 12.5 Z' fill='%23211a12' stroke='%23f7f0dd' stroke-width='1.3'/><circle cx='9.4' cy='9.4' r='1.4' fill='%23f7f0dd'/></svg>") 2 2, crosshair;
 }
 img{display:block;max-width:100%;-webkit-user-drag:none}
@@ -25,7 +20,6 @@ ul,ol{list-style:none}
 button{font:inherit;color:inherit;background:none;border:0;cursor:inherit}
 ::selection{background:var(--red);color:var(--cream)}
 
-/* ---------- film grain (feTurbulence, not a gradient) ---------- */
 .grain{
   position:fixed;inset:-50%;z-index:120;pointer-events:none;opacity:.08;
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='240' height='240' filter='url(%23n)'/%3E%3C/svg%3E");
@@ -36,15 +30,12 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:inherit}
   50%{transform:translate(3%,-2%)}75%{transform:translate(-2%,-4%)}100%{transform:translate(0,0)}
 }
 
-/* ============================================================
-   SIDE RAIL — the header stands up on the left
-   ============================================================ */
 .rail{
   position:fixed;top:0;bottom:0;left:0;width:var(--rail);z-index:500;
   background:var(--ink);color:var(--cream);
   display:flex;flex-direction:column;align-items:center;
   border-right:4px solid var(--red);
-  overflow:hidden;                          /* never spill, never squeeze */
+  overflow:hidden;                       
 }
 .rail-logo{flex-shrink:0}
 .rail::after{
@@ -61,7 +52,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:inherit}
 .rail-nav{
   flex:1 1 auto;width:100%;display:flex;flex-direction:column;align-items:center;
   gap:14px;padding:12px 0;min-height:0;
-  overflow-y:auto;scrollbar-width:none;     /* extreme short windows: nav scrolls */
+  overflow-y:auto;scrollbar-width:none;    
 }
 .rail-nav::-webkit-scrollbar{display:none}
 .rail-nav a{
@@ -104,9 +95,6 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:inherit}
 .rail-pinky:hover{transform:scale(1.25) rotate(12deg);border-color:var(--red)}
 @keyframes pinkySpin{to{transform:rotate(360deg)}}
 
-/* ============================================================
-   TRACK & PANELS
-   ============================================================ */
 .track{
   position:fixed;top:0;left:var(--rail);bottom:0;right:0;
   display:flex;will-change:transform;touch-action:none;cursor:grab;
@@ -116,7 +104,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:inherit}
   position:relative;flex:0 0 auto;width:100%;height:100%;
   padding:96px 84px 120px 72px;
   border-right:4px dashed var(--ink);
-  overflow-x:hidden;overflow-y:auto;      /* vertical roll inside the reel */
+  overflow-x:hidden;overflow-y:auto;     
   display:flex;flex-direction:column;
   scrollbar-color:var(--red) var(--paper2);scrollbar-width:thin;
 }
@@ -142,14 +130,12 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:inherit}
 }
 .p-lede{margin-top:16px;max-width:56ch;font-size:15px}
 
-/* --- reveal on scroll (tilt keeps landing on its own tilt) --- */
 .rv{
   opacity:0;transform:translateY(26px) rotate(var(--tilt,0deg)) scale(.97);
   transition:opacity .5s var(--bezier) var(--d,0s),transform .55s var(--bezier) var(--d,0s);
 }
 .rv.is-in{opacity:1;transform:translateY(0) rotate(var(--tilt,0deg)) scale(1)}
 
-/* ---------- living characters ---------- */
 .anim-bob{animation:bob 2.6s ease-in-out infinite}
 @keyframes bob{0%,100%{transform:translateY(0) rotate(0)}35%{transform:translateY(-13px) rotate(-2deg)}70%{transform:translateY(-3px) rotate(1.5deg)}}
 .anim-march{animation:march .62s steps(2) infinite}
@@ -163,9 +149,6 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:inherit}
 .anim-blink{animation:blink 5s steps(1) infinite}
 @keyframes blink{0%,41%,61%,100%{filter:none}45%,55%{filter:brightness(1.25)}}
 
-/* ============================================================
-   01 MAIN
-   ============================================================ */
 .panel--main{justify-content:center}
 .hero{position:relative;z-index:3;max-width:620px}
 .hero-kicker{font-size:13px;letter-spacing:.5em;color:var(--red);text-transform:uppercase}
@@ -208,12 +191,8 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:inherit}
 }
 @keyframes tick{to{transform:translateX(-50%)}}
 
-/* page-entry stagger (plays after ink curtain) */
 .enter-stage .rv{transition-delay:calc(var(--d,0s) + .1s)}
 
-/* ============================================================
-   02 WORK — showreel of real studio pictures
-   ============================================================ */
 .work-ribbon{display:flex;align-items:flex-start;gap:36px;margin-top:50px;padding:24px 0 10px;position:relative;z-index:3;width:100%}
 .film{
   position:relative;flex:1 1 288px;max-width:420px;min-width:250px;
@@ -268,9 +247,6 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:inherit}
   border-top:3px solid var(--ink);padding-top:14px;
 }
 
-/* ============================================================
-   03 ABOUT
-   ============================================================ */
 .panel--about .about-grid{
   display:grid;grid-template-columns:minmax(330px,1.1fr) minmax(300px,.9fr);
   gap:46px;margin-top:30px;align-items:start;position:relative;z-index:3;
@@ -324,9 +300,6 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:inherit}
 .pantheon li{font-size:13px}
 .pantheon li i{font-style:normal;color:var(--red)}
 
-/* ============================================================
-   04 CAPABILITIES
-   ============================================================ */
 .panel--cap{width:100%;background:var(--paper2)}
 .cap-chain{
   margin-top:56px;display:flex;align-items:flex-start;position:relative;z-index:3;
@@ -338,7 +311,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:inherit}
   transition:transform .3s var(--bezier);
 }
 .cap:nth-child(even){margin-top:52px}
-.cap:nth-child(n+2)::before{                 /* dashed strip between nodes */
+.cap:nth-child(n+2)::before{                 
   content:"";position:absolute;top:46px;right:100%;width:26px;height:0;
   border-top:4px dashed var(--ink);
 }
@@ -373,9 +346,6 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:inherit}
 .cap-foot a{color:var(--red);border-bottom:2px solid var(--red)}
 .cap-foot a:hover{background:var(--ink);color:var(--cream);border-color:var(--ink)}
 
-/* ============================================================
-   01 MAIN — extra program panels
-   ============================================================ */
 .minitriplet{display:grid;grid-template-columns:repeat(3,1fr);gap:30px;margin-top:44px}
 .minitriplet .card{
   background:var(--cream);border:3px solid var(--ink);box-shadow:var(--sh);
@@ -404,9 +374,6 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:inherit}
 .wall-wide img{width:130px;flex:0 0 130px;border:2px solid var(--ink);background:var(--paper2)}
 .wall-wide b{margin-bottom:6px}
 
-/* ============================================================
-   FILM CASE FILE page
-   ============================================================ */
 .case-grid{
   display:grid;grid-template-columns:minmax(430px,1.25fr) minmax(240px,.55fr);
   gap:34px;margin-top:30px;align-items:start;position:relative;z-index:3;
@@ -430,7 +397,6 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:inherit}
   transform:rotate(-1.4deg);background:var(--cream);
 }
 
-/* per-film dossier chips — premiere / technique / music / status */
 .case-dossier{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:16px 0 4px;position:relative;z-index:3}
 .case-chip{border:2px solid var(--ink);background:var(--cream);padding:9px 11px 8px;box-shadow:var(--sh)}
 .case-chip:nth-child(odd){transform:rotate(-.8deg)}
@@ -438,13 +404,11 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:inherit}
 .case-chip i{display:block;font-style:normal;font-size:9px;letter-spacing:.2em;color:var(--red);text-transform:uppercase;margin-bottom:3px}
 .case-chip span{font-size:12px;line-height:1.35}
 
-/* the studio's rubber-stamp verdict at the foot of the sheet */
 .case-verdict{margin-top:20px;display:flex;align-items:center;gap:16px;border:3px double var(--red);background:var(--cream);padding:12px 16px;transform:rotate(-1.2deg);box-shadow:var(--sh);position:relative;z-index:3}
 .case-verdict .vg{font-family:"Bevan",serif;font-size:38px;line-height:1;color:var(--red);flex:0 0 auto}
 .case-verdict i{display:block;font-style:normal;font-family:"Bevan",serif;font-size:12px;letter-spacing:.16em;text-transform:uppercase;margin-bottom:3px}
 .case-verdict span{font-size:12px;color:#5a4f3d}
 
-/* side column: trivia list + museum placard */
 .case-trivia{margin-top:18px;border-left:5px solid var(--gold);background:var(--paper2);padding:11px 13px;transform:rotate(.6deg)}
 .case-trivia b{display:block;font-family:"Bevan",serif;font-size:11px;letter-spacing:.2em;color:var(--red);text-transform:uppercase;margin-bottom:2px}
 .case-trivia ul{list-style:none;padding:0;margin:0}
@@ -453,7 +417,6 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:inherit}
 .case-placard{margin-top:16px;border:2px solid var(--ink);background:var(--cream);padding:9px 10px;text-align:center;font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:#5a4f3d;transform:rotate(-.6deg);box-shadow:var(--sh)}
 .case-placard b{display:block;font-family:"Bevan",serif;font-size:12px;letter-spacing:.16em;color:var(--ink);margin:2px 0}
 
-/* 404 · the lost reel */
 .lost-row{display:flex;align-items:center;gap:44px;margin-top:26px;flex-wrap:wrap;position:relative;z-index:3}
 .lost-stamp{
   display:grid;place-items:center;width:148px;height:148px;flex:0 0 auto;
@@ -484,9 +447,6 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:inherit}
 .case-back a{color:var(--red);border-bottom:2px solid var(--red)}
 .case-back a:hover{background:var(--ink);color:var(--cream);border-color:var(--ink)}
 
-/* ============================================================
-   05 CONTACT
-   ============================================================ */
 .contact-grid{
   display:grid;grid-template-columns:minmax(330px,1.05fr) minmax(250px,.55fr);
   gap:44px;margin-top:26px;align-items:start;position:relative;z-index:3;
@@ -508,7 +468,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:inherit}
   display:block;width:100%;margin-top:6px;padding:10px 12px;
   background:var(--paper);border:2px solid var(--ink);
   font:15px "Special Elite",monospace;color:var(--ink);
-  caret-color:transparent;                 /* terminal block caret instead */
+  caret-color:transparent;                 
 }
 .tt-wrap{position:relative;display:block}
 .tt-caret{
@@ -547,9 +507,6 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:inherit}
 }
 .foot b{color:var(--red)}
 
-/* ============================================================
-   BUTTONS
-   ============================================================ */
 .btn{
   position:relative;display:inline-block;padding:13px 26px 11px;
   background:var(--cream);border:3px solid var(--ink);box-shadow:var(--sh);
@@ -570,9 +527,6 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:inherit}
 .btn--red{background:var(--red);color:var(--cream)}
 .btn--red:hover{background:var(--ink)}
 
-/* ============================================================
-   INTRO (main page only)
-   ============================================================ */
 .intro{position:fixed;inset:0;z-index:1000;background:var(--paper);display:grid;place-items:center}
 .intro::before,.intro::after{
   content:"";position:absolute;left:0;right:0;height:34px;
@@ -640,14 +594,9 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:inherit}
 @keyframes reelShake{0%,100%{transform:translate(0,0)}20%{transform:translate(-6px,3px)}40%{transform:translate(5px,-4px)}60%{transform:translate(-4px,-2px)}80%{transform:translate(3px,4px)}}
 .reel-shake{animation:reelShake .34s linear}
 
-/* ============================================================
-   INK WIPE between pages
-   ============================================================ */
-/* width/height are NOT optional: an svg with only a viewBox is a replaced element —
-   inset:0 alone sizes it as a w×w SQUARE pinned to the top, leaving the lower screen un-inked */
 .wipe{position:fixed;inset:0;width:100%;height:100%;z-index:900;pointer-events:none;display:none}
 .wipe.on{display:block}
-html.ink-cover{background:var(--ink)}   /* the head inline style is the first paint; this is the backup */
+html.ink-cover{background:var(--ink)}   
 .w-blob,.w-dot{transform-box:fill-box;transform-origin:center}
 .wipe--in .w-blob{animation:blobIn .3s steps(5) forwards}
 .wipe--in .w-dot1{animation:dotIn .34s linear forwards}
@@ -660,9 +609,6 @@ html.ink-cover{background:var(--ink)}   /* the head inline style is the first pa
 @keyframes dotIn{from{transform:scale(0)}to{transform:scale(3)}}
 @keyframes dotOut{from{transform:scale(3)}to{transform:scale(0)}}
 
-/* ============================================================
-   EXTRAS — runner · parry bullets · whack · projector · KO · stamps
-   ============================================================ */
 .film-strip{
   position:fixed;left:var(--rail);right:-48px;bottom:0;height:22px;z-index:460;
   border-top:3px solid var(--ink);background-color:var(--paper2);
@@ -807,8 +753,7 @@ body.old-proj .grain{opacity:.14}
   .rail-onair b{font-size:6px}
   .rail-tail{padding:8px 0 10px;gap:5px}
 }
-/* very short windows: vertical labels alone need ~530px — switch to number chips
-   so every page stays reachable; labels stay in the a11y tree */
+
 @media (max-height:740px){
   .rail-nav{gap:8px;padding:6px 0}
   .rail-nav a{writing-mode:horizontal-tb;padding:4px 5px}
@@ -817,7 +762,7 @@ body.old-proj .grain{opacity:.14}
     clip:rect(0 0 0 0);white-space:nowrap;
   }
 }
-/* last resort: ~400px-tall windows */
+
 @media (max-height:440px){
   .rail-logo{width:34px;height:34px;font-size:13px;margin:4px 0 2px}
   .rail-nav{gap:6px;padding:3px 0}
@@ -827,9 +772,6 @@ body.old-proj .grain{opacity:.14}
   .rail-stamps i{width:9px;height:9px}
 }
 
-/* ============================================================
-   RESPONSIVE / MOTION
-   ============================================================ */
 @media (max-width:1100px){
   .panel{padding:88px 54px 110px 48px}
   .hero-cast{width:34vw;right:8px}
@@ -846,11 +788,11 @@ body.old-proj .grain{opacity:.14}
   .panel--cap{width:100%}
   .hero-cast{opacity:.55;width:44vw}
   .scroll-cue{left:28px}
-  /* narrow panes: nothing may be clipped out of reach */
-  .panel--about .about-grid{grid-template-columns:1fr;gap:26px}   /* beats the taller-specificity base rule */
+  
+  .panel--about .about-grid{grid-template-columns:1fr;gap:26px}   
   .case-grid{grid-template-columns:1fr;gap:26px}
   .cap-chain{flex-wrap:wrap;column-gap:18px;row-gap:34px}
-  .cap-chain .cap::before{display:none}                           /* no dangling dashes between wrapped rows */
+  .cap-chain .cap::before{display:none}                           
   .cap{flex-basis:150px}
   .lost-row{gap:24px}
 }
@@ -858,9 +800,6 @@ body.old-proj .grain{opacity:.14}
   *,*::before,*::after{animation-duration:.01s !important;transition-duration:.01s !important}
 }
 
-/* ============================================================
-   12 LIFE — line boil, megaphone, ink trail, cameo, pop stars
-   ============================================================ */
 @keyframes boil{
   0%{border-radius:0}
   50%{border-radius:2px 1px 2px 1px/1px 2px 1px 2px}
@@ -869,7 +808,6 @@ body.old-proj .grain{opacity:.14}
 .film,.next-card,.case-chip,.case-fact,.case-trivia,.case-placard,.case-verdict,
 .about-facts li,.mate,.case-sheet{animation:boil .46s steps(1) infinite}
 
-/* MR. MEGAPHONE — bottom-right announcer */
 .megaphone{
   position:fixed;right:18px;bottom:18px;max-width:272px;z-index:1200;
   background:var(--cream);border:3px solid var(--ink);box-shadow:var(--sh);
@@ -886,7 +824,6 @@ body.old-proj .grain{opacity:.14}
 .megaphone b{display:block;font-family:"Bevan",serif;font-size:10px;letter-spacing:.2em;color:var(--red);margin-bottom:3px}
 .megaphone span{font-family:"Courier Prime",monospace;font-size:12px;line-height:1.45}
 
-/* ink trail drops */
 .ink-drop{
   position:fixed;z-index:60;width:calc(var(--ir,3px)*2);height:calc(var(--ir,3px)*2);
   margin:calc(var(--ir,3px)*-1) 0 0 calc(var(--ir,3px)*-1);
@@ -895,7 +832,6 @@ body.old-proj .grain{opacity:.14}
 }
 @keyframes inkfade{from{transform:scale(.35);opacity:.55}to{transform:scale(1.2);opacity:0}}
 
-/* coffee-break cameo: the runner dashes past once you idle */
 .cameo{
   position:fixed;left:0;bottom:7vh;z-index:65;width:118px;pointer-events:none;
   animation:cameo-dash 4.2s linear forwards;
@@ -904,24 +840,17 @@ body.old-proj .grain{opacity:.14}
 @keyframes cameo-dash{from{transform:translateX(-130px)}to{transform:translateX(calc(100vw + 150px))}}
 @keyframes cameo-bob{from{transform:translateY(0) rotate(-3deg)}to{transform:translateY(-9px) rotate(4deg)}}
 
-/* typed-secret star burst */
 .pop-star{
   position:fixed;top:-34px;z-index:1300;pointer-events:none;
   animation:popfall 1.7s cubic-bezier(.3,.4,.6,1) forwards;
 }
 @keyframes popfall{from{transform:translateY(0) rotate(0)}to{transform:translateY(108vh) rotate(320deg);opacity:.15}}
 
-/* rail stamps are alive under the cursor */
 .rail-stamps i{transition:transform .18s var(--bezier)}
 .rail-stamps i:hover{transform:scale(1.45) rotate(-14deg)}
 
-/* night shift: paper darkens a shade after hours */
 .night-shift{--paper:#e7dabb;--paper2:#ddcdab;--cream:#efe6cf}
 
-/* ============================================================
-   13 EXTRAS — ON AIR lamp, film leader, open-since ledger, King Dice
-   ============================================================ */
-/* ON AIR: the house jazz lives on a rail lamp (click for the 1917 shellac) */
 .rail-onair{
   width:34px;height:26px;border:2px solid #cfc4a6;border-radius:6px;color:#cfc4a6;
   display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;padding:0;
@@ -941,7 +870,6 @@ body.onair .rail-onair .lamp{
 }
 @keyframes lamppulse{50%{opacity:.5}}
 
-/* film leader: 3-2-1 while the projector threads */
 .leader{
   position:fixed;inset:0;z-index:1500;background:var(--paper);
   display:flex;flex-direction:column;align-items:center;justify-content:center;gap:26px;
@@ -965,7 +893,6 @@ body.onair .rail-onair .lamp{
 .leader-disc b{position:relative;font-family:"Bevan",serif;font-size:96px;color:var(--ink);line-height:1}
 .leader-cap{font-family:"Courier Prime",monospace;font-size:11px;letter-spacing:.3em;color:#5a4f3d}
 
-/* open-since ledger: the house counts its years out loud */
 .since{
   margin:26px 0 0;display:flex;flex-wrap:wrap;align-items:baseline;gap:10px 14px;
   background:var(--cream);border:3px solid var(--ink);box-shadow:var(--sh);
@@ -975,7 +902,6 @@ body.onair .rail-onair .lamp{
 .since span{font-family:"Courier Prime",monospace;font-size:13px;letter-spacing:.06em}
 .since i{font-style:italic;font-size:11px;color:#5a4f3d}
 
-/* king dice easter egg: the manager struts across when you type DICE */
 .kingdice{
   position:fixed;left:0;bottom:5vh;z-index:70;width:132px;pointer-events:none;
   animation:king-strut 5s linear forwards;
@@ -983,17 +909,12 @@ body.onair .rail-onair .lamp{
 .kingdice img{width:100%;display:block;animation:cameo-bob .34s ease-in-out infinite alternate}
 @keyframes king-strut{from{transform:translateX(-150px)}to{transform:translateX(calc(100vw + 170px))}}
 
-/* narrow panes: the leader disc shrinks with the room */
 @media (max-width:820px){
   .leader-disc{width:150px;height:150px}
   .leader-disc b{font-size:64px}
   .leader-cap{font-size:9px;letter-spacing:.2em;text-align:center;padding:0 18px}
 }
 
-/* ============================================================
-   14 THE VAULT DESK — wire log + guest № (fed by postgres)
-   ============================================================ */
-/* the telegraph rack on contact: every wire filed in the vault */
 .wire-log{
   margin:26px 0 0;background:var(--cream);border:3px solid var(--ink);box-shadow:var(--sh);
   padding:14px 18px 12px;transform:rotate(.4deg);

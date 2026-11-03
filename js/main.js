@@ -5,7 +5,7 @@
   const $  = (s, c) => (c || document).querySelector(s);
   const $$ = (s, c) => Array.from((c || document).querySelectorAll(s));
 
-  const PAGE_URLS = ['index.html', 'work.html', 'about.html', 'capabilities.html', 'contact.html'];
+  const PAGE_URLS = ['/index.html', '/work.html', '/about.html', '/capabilities.html', '/contact.html'];
   const rebound = document.body.dataset.page | 0;          // 0..4
   const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
   // site entry detector: the first page load of this browsing session plays
@@ -45,7 +45,7 @@
         s.buffer = b; g.gain.value = .2;
         s.connect(g).connect(AC.destination); s.start(t);
       }
-    } catch (e) { /* sound is a garnish */ }
+    } catch (e) {  }
   }
   ['pointerdown', 'keydown', 'wheel', 'touchstart'].forEach(ev =>
     window.addEventListener(ev, () => {
@@ -54,19 +54,11 @@
       if (window.__onairWake) window.__onairWake(); // the jazz resumes after an internal hop
     }, { passive: true }));
 
-  /* ---------------------------------------------------------
-     REEL counter — one per page
-  --------------------------------------------------------- */
-  const reelEl = $('#reelCounter');
+    const reelEl = $('#reelCounter');
   // pages marked data-page="x" (the 404) keep their own cheeky counter
   if (reelEl && !isNaN(parseInt(document.body.dataset.page, 10))) reelEl.innerHTML = 'REEL 0' + (rebound + 1) + '<i>/0' + PAGE_URLS.length + '</i>';
 
-  /* ---------------------------------------------------------
-     INK-WIPE transitions between pages
-     leave:  cover the screen from the click point → go
-     arrive: covered by ink → dissolve to reveal
-  --------------------------------------------------------- */
-  const wipeBlob = $('#wipeBlob');
+    const wipeBlob = $('#wipeBlob');
   function aimWipe(cx, cy) {    // the ink blooms from where you acted, not from screen centre.
     if (!wipeBlob) return;      // NB: move the BLOB inside the svg, never the svg itself — the
     const px = isFinite(cx) ? cx : window.innerWidth / 2;   // svg is the clip box: shift it and
@@ -133,10 +125,7 @@
     });
   });
 
-  /* ---------------------------------------------------------
-     Horizontal film scroll (wheel · drag · keys)
-  --------------------------------------------------------- */
-  let x = 0, xTarget = 0, maxX = 0, dragging = false, dragSX = 0, dragX0 = 0;
+    let x = 0, xTarget = 0, maxX = 0, dragging = false, dragSX = 0, dragX0 = 0;
 
   function measure() {
     const railW = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--rail')) || 78;
@@ -187,10 +176,7 @@
     if (e.key === 'End')  { xTarget = maxX }
   });
 
-  /* ---------------------------------------------------------
-     Reveal & lazy-loading & sprite drift — all in the frame
-  --------------------------------------------------------- */
-  const rvs  = $$('.rv');
+    const rvs  = $$('.rv');
   const lazy = $$('[data-src]');
   const driftEls = $$('[data-drift]');
   const finePointer = matchMedia('(pointer:fine)').matches;
@@ -242,11 +228,8 @@
   window.addEventListener('load', remeasure);
   [800, 2000, 4000].forEach(ms => setTimeout(remeasure, ms));
 
-  /* ---------------------------------------------------------
-     TELEGRAM form — KNOCKOUT stamp
-  --------------------------------------------------------- */
-  const form = $('#telegramForm');
-  /* --- the wire log: filed wires, straight from the postgres vault --- */
+    const form = $('#telegramForm');
+  
   const wireList = $('#wireLog');
   function renderWires(rows) {
     if (!wireList) return;
@@ -270,7 +253,7 @@
       if (!r.ok) return;
       const rows = await r.json();
       if (Array.isArray(rows) && rows.length) renderWires(rows);
-    } catch (e) { /* no vault desk — the rack keeps its placeholder */ }
+    } catch (e) {  }
   }
   loadWires();
   if (form) form.addEventListener('submit', (e) => {
@@ -297,10 +280,7 @@
     });
   });
 
-  /* ---------------------------------------------------------
-     FILM CATALOG — case-file pages (film.html?f=slug)
-  --------------------------------------------------------- */
-  const FILMS = {
+    const FILMS = {
     'snow-white': {
       title: '“Snow-White”',
       studio: 'Max Fleischer Studios',
@@ -466,7 +446,7 @@
       studio: 'Soot Studio studies (orig. © StudioMDHR)',
       year: '1934 (reel)',
       meta: 'studio vault · 0:23 · from the official game reels',
-      yt: null, img: 'assets/work-cagney-fight.png?v=40', mp4: 'assets/work-gameover-reel.mp4?v=40',
+      yt: null, img: '/assets/work-cagney-fight.png?v=40', mp4: '/assets/work-gameover-reel.mp4?v=40',
       tick: 'Runtime 0:23 · our study reel · film presented in original resolution',
       body: [
         ['What the cups study after hours',
@@ -566,10 +546,7 @@
         '<b>THE SOOT VAULT</b>RESTORED PRINTS DEPT';
     }
   }
-  /* ---------------------------------------------------------
-     FILM CARDS — ▶ plays in-card, click on card opens case file
-  --------------------------------------------------------- */
-  $$('.film[data-film]').forEach(card => {
+    $$('.film[data-film]').forEach(card => {
     const slug = card.dataset.film;
     card.addEventListener('click', (e) => {
       if (e.target.closest('.film-play, .film-watch, video, iframe, a')) return;
@@ -579,7 +556,7 @@
       sessionStorage.setItem('soot-ink-y', e.clientY || window.innerHeight / 2);
       aimWipe(e.clientX || window.innerWidth / 2, e.clientY || window.innerHeight / 2);
       wipe.classList.add('on', 'wipe--in');
-      setTimeout(() => { location.href = 'film.html?f=' + slug; }, reduced ? 20 : 300);
+      setTimeout(() => { location.href = '/film.html?f=' + slug; }, reduced ? 20 : 300);
     });
     const play = card.querySelector('.film-play');
     if (play && play.dataset.yt) play.addEventListener('click', (e) => {
@@ -597,7 +574,6 @@
   const vaultV = $('#vault');
   if (vaultV) vaultV.addEventListener('click', (e) => e.stopPropagation());
 
-  /* --- UP NEXT cards on the case page → wipe to another case file --- */
   $$('[data-film-link]').forEach(el => el.addEventListener('click', (e) => {
     e.preventDefault();
     cue('click');
@@ -606,13 +582,10 @@
     sessionStorage.setItem('soot-ink-y', e.clientY || window.innerHeight / 2);
     aimWipe(e.clientX || window.innerWidth / 2, e.clientY || window.innerHeight / 2);
     wipe.classList.add('on', 'wipe--in');
-    setTimeout(() => { location.href = 'film.html?f=' + el.dataset.filmLink; }, reduced ? 20 : 300);
+    setTimeout(() => { location.href = '/film.html?f=' + el.dataset.filmLink; }, reduced ? 20 : 300);
   }));
 
-  /* ---------------------------------------------------------
-     TYPEWRITER CARET — terminal block cursor in every field
-  --------------------------------------------------------- */
-  (function typewriterCaret() {
+    (function typewriterCaret() {
     $$('.telegraph input, .telegraph textarea').forEach(inp => {
       const wrap = document.createElement('span'); wrap.className = 'tt-wrap';
       inp.parentNode.insertBefore(wrap, inp); wrap.appendChild(inp);
@@ -653,12 +626,6 @@
     });
   })();
 
-  /* =========================================================
-     EXTRAS — running Cuphead · cursor-watchers · parry bullets
-     whack stamps · old-projector mode · KO finale · stamp album
-  ========================================================= */
-
-  /* --- tiny localStorage JSON helpers --- */
   const LS = {
     get(k, d) {
       try { const v = JSON.parse(localStorage.getItem(k)); return v == null ? d : v; }
@@ -667,7 +634,6 @@
     set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
   };
 
-  /* --- stamp collection (rail dots + toasts) --- */
   const STAMP_DEFS = [
     ['p0', 'MAIN PAGE'], ['p1', 'SHOWREEL'], ['p2', 'THE TEAM'],
     ['p3', 'INKWELL'], ['p4', 'TELEGRAPH'],
@@ -692,7 +658,6 @@
     setTimeout(() => { t.classList.remove('on'); setTimeout(() => t.remove(), 500); }, 2600);
   }
 
-  /* --- KNOCKOUT screen: 12-point star drawn here, confetti stars --- */
   function koShow(text) {
     if ($('.ko-screen')) return;
     cue('boom');
@@ -740,7 +705,6 @@
     }
   }
 
-  /* --- MR. MEGAPHONE — the studio's live announcer: reacts, teases, never blocks --- */
   const MEG_LINES = {
     idle: [
       'PSST — the dice in the rail are rigged for fun. Roll ’em.',
@@ -795,7 +759,6 @@
     }, 44000 + Math.random() * 34000);
   })();
 
-  /* --- typed house year: 1-9-3-0 --- */
   let yearBuf = '';
   document.addEventListener('keydown', (e) => {
     if (document.getElementById('intro')) return;
@@ -807,7 +770,7 @@
     if (isYear) { cue('boom'); starPop(); megSay(MEG_LINES.secret, 5200); }
     else diceWalk();
   });
-  /* --- king dice easter egg: type DICE and the manager struts past --- */
+  
   function diceWalk() {
     if ($('.kingdice')) return;
     const d = document.createElement('div');
@@ -832,7 +795,6 @@
     }
   }
 
-  /* --- ink trail: swift mouse swipes leave little drops --- */
   (function inkTrail() {
     if (reduced) return;
     let lx = -1, ly = -1, last = 0;
@@ -853,7 +815,6 @@
     }, { passive: true });
   })();
 
-  /* --- coffee-break cameo: Cuphead sprints past if you idle --- */
   const cameoForce = (function cameo() {
     if (reduced || !track) return () => {};
     let last = Date.now(), el = null;
@@ -871,7 +832,6 @@
     return () => { last = 0; };
   })();
 
-  /* --- reel counter does a little slot roll on arrival --- */
   (function reelRoll() {
     const el = $('#reelCounter');
     if (!el || reduced) return;
@@ -885,13 +845,11 @@
     }, 64);
   })();
 
-  /* --- night shift: the paper darkens a shade after hours --- */
   (function nightShift() {
     const h = new Date().getHours();
     if (h >= 20 || h < 6) document.documentElement.classList.add('night-shift');
   })();
 
-  /* --- ON AIR: the house jazz (a 1917 shellac) lives on a rail lamp --- */
   (function onair() {
     const btn = $('#onairBtn');
     if (!btn) return;
@@ -904,7 +862,7 @@
         btn.setAttribute('aria-pressed', cls === 'onair' ? 'true' : 'false');
       };
       try {
-        el = el || new Audio('assets/onair-jazz.mp3?v=40');
+        el = el || new Audio('/assets/onair-jazz.mp3?v=40');
         el.loop = true; el.volume = .42;
         const p = el.play();
         if (p && p.then) p.then(() => { armed = false; paint('onair'); })
@@ -938,7 +896,6 @@
       armed: document.body.classList.contains('onair-armed'), t: el ? el.currentTime : 0 });
   })();
 
-  /* --- film leader: 3-2-1 while the projector threads (first case per session) --- */
   (function filmLeader() {
     const el = $('#leader');
     if (!el) return;
@@ -946,7 +903,7 @@
     try {
       if (sessionStorage.getItem('soot-leader')) { el.remove(); return; }
       sessionStorage.setItem('soot-leader', '1');
-    } catch (e) { /* private mode: the countdown simply always plays */ }
+    } catch (e) {  }
     const num = $('#leaderNum');
     let n = 3;
     const done = () => {
@@ -964,7 +921,6 @@
     }, 540);
   })();
 
-  /* --- open-since ledger: the house counts its years out loud --- */
   (function sinceLedger() {
     const el = $('#sinceCount');
     if (!el) return;
@@ -977,7 +933,7 @@
     };
     paint();
     setInterval(paint, 1000);
-    /* guest №: one admits count per browser, straight from the postgres vault */
+    
     const guest = $('#guestNo');
     if (guest) {
       try {
@@ -995,12 +951,11 @@
             guest.textContent = 'GUEST №' + String(j.admits).padStart(6, '0');
             guest.hidden = false;
           }
-        }).catch(() => { /* no vault desk — the ledger simply omits the guest line */ });
-      } catch (e) { /* old browser: stay quiet */ }
+        }).catch(() => {  });
+      } catch (e) {  }
     }
   })();
 
-  /* --- film strip + running Cuphead (keeps pace with your scroll) --- */
   let runTick = null, watchTick = null;
   if (track) {
     const strip = document.createElement('div');
@@ -1025,7 +980,6 @@
     };
   }
 
-  /* --- cursor-watchers: cast leans after the mouse --- */
   const watchers = $$('[data-watch]').map(el => ({ el, k: parseFloat(el.dataset.watch) || .1 }));
   const mouse = { x: innerWidth / 2, y: innerHeight * .4 };
   addEventListener('pointermove', (e) => { mouse.x = e.clientX; mouse.y = e.clientY; }, { passive: true });
@@ -1049,9 +1003,8 @@
     if (watchTick) watchTick();
   };
 
-  /* --- parry bullets: roam the viewport, click mid-flight to PARRY --- */
   let combo = 0, comboT = null;
-  /* the house record wall: combos are filed in postgres; beat it and the megaphone knows */
+  
   fetch('/api/parry').then((r) => r.ok ? r.json() : null).catch(() => null);
   function parryReport(s) {
     if (s < 2) return;
@@ -1063,7 +1016,7 @@
       if (j && j.best && j.best <= s) {
         megSay('A NEW HOUSE RECORD — ' + j.best + ' IN A ROW! THE FRAME GOES ON THE WALL!');
       }
-    }).catch(() => { /* no vault desk — parrying stays a private art */ });
+    }).catch(() => {  });
   }
   function parryScored(cx, cy) {
     combo++;
@@ -1130,7 +1083,6 @@
     })();
   }
 
-  /* --- WHACK! comic tags + squash on every plain click --- */
   const WHACKS = ['POW!', 'BOINK!', 'WHACK!', 'BAP!', 'ZLOPP!', 'KA-POW!', 'SOCK!'];
   let whacks = 0;
   document.addEventListener('click', (e) => {
@@ -1154,7 +1106,6 @@
     if (whacks === 10) award('whack');
   });
 
-  /* --- OLD PROJECTOR mode: sepia, flicker, scratches, rattle --- */
   let rattle = null;
   function rattleOn() {
     if (rattle || !audioOK.gate || reduced) return;
@@ -1177,7 +1128,7 @@
           setTimeout(() => { try { src.stop(); } catch (e) {} }, 400);
         }
       };
-    } catch (e) { /* the projector stays silent */ }
+    } catch (e) {  }
   }
   function projOverlays() {
     if ($('.proj-vig')) return;
@@ -1207,7 +1158,6 @@
     if (document.body.classList.contains('old-proj') && !rattle) rattleOn();
   };
 
-  /* --- KING DICE dice: roll two, the sum picks your picture --- */
   const diceBtn = $('#diceBtn');
   if (diceBtn) {
     const mkDie = () => { const d = document.createElement('span'); d.className = 'die-face'; return d; };
@@ -1254,13 +1204,12 @@
           sessionStorage.setItem('soot-ink-y', (window.innerHeight / 2).toFixed(0));
           aimWipe(window.innerWidth - 130, window.innerHeight / 2);
           wipe.classList.add('on', 'wipe--in');
-          setTimeout(() => { location.href = 'film.html?f=' + slug; }, reduced ? 20 : 300);
+          setTimeout(() => { location.href = '/film.html?f=' + slug; }, reduced ? 20 : 300);
         }, 1500);
       }, 950);
     });
   }
 
-  /* --- KNOCKOUT finale on the telegraph form --- */
   const tgForm = $('#telegramForm');
   if (tgForm) tgForm.addEventListener('submit', (e) => {
     e.preventDefault();                     // the wire is sent theatrically — no page reload
@@ -1274,7 +1223,6 @@
   renderStamps();
   if (!isNaN(parseInt(document.body.dataset.page, 10))) award('p' + rebound);   // visit stamp for real pages only
 
-  /* --- debug/verification hook --- */
   window.__extrasDebug = {
     spawnBullet, projSet, koShow, award, parryScored,
     meg: megSay, cameoForce, diceWalk, onair: window.__onairState,
@@ -1286,8 +1234,7 @@
     })
   };
 
-
-  const BOOM = ['assets/boom-post-1.png?v=40', 'assets/boom-post-2.png?v=40', 'assets/boom-post-3.png?v=40'];
+  const BOOM = ['/assets/boom-post-1.png?v=40', '/assets/boom-post-2.png?v=40', '/assets/boom-post-3.png?v=40'];
   const introTimers = [];
   const intro = $('#intro');
   if (intro && !siteEntry) {
@@ -1310,7 +1257,7 @@
         flower.classList.remove('shake'); void flower.offsetWidth;
         flower.classList.add('shake');
         // visible hit-flash on the flower
-        boom.src = 'assets/boom-pre.png?v=40';
+        boom.src = '/assets/boom-pre.png?v=40';
         boom.style.display = '';
         boom.style.opacity = '1';
         boom.style.transition = 'none';
@@ -1325,7 +1272,7 @@
       boom.style.display = '';
       boom.style.opacity = '1';
       boom.style.transition = 'none';
-      boom.src = 'assets/boom-pre.png?v=40';
+      boom.src = '/assets/boom-pre.png?v=40';
       boom.style.transform = 'scale(1)';
       flash.classList.remove('on'); void flash.offsetWidth; flash.classList.add('on');
       document.body.classList.add('reel-shake');
