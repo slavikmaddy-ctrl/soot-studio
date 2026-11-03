@@ -1059,3 +1059,7 @@ body.onair .rail-onair .lamp{
 }
 .rail-pop.on{opacity:1;transform:rotate(-1deg) translateX(0) scale(1);pointer-events:auto}
 @media (prefers-reduced-motion:reduce){.rail-pop,.rail-tools{transition:none}}
+
+body{cursor:url("glove-point.svg") 4 4, default}
+a,button,[role="button"],.film-frame,.film-case,.faq-q,.rail-pinky,.rail-tools{cursor:url("glove-two.svg") 5 4, pointer}
+input,textarea,select{cursor:text}
