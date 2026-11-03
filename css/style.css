@@ -77,7 +77,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:inherit}
 .rail-nav a.is-active i{background:var(--red);color:var(--cream)}
 .rail-tail{
   flex-shrink:0;display:flex;flex-direction:column;align-items:center;
-  gap:6px;padding:10px 0 14px;
+  gap:9px;padding:10px 0 14px;
 }
 .rail-reel{
   writing-mode:horizontal-tb;transform:none;
@@ -753,7 +753,7 @@ body.old-proj .grain{opacity:.14}
   .rail-onair{height:22px}
   .rail-onair .lamp{width:7px;height:7px}
   .rail-onair b{font-size:6px}
-  .rail-tail{padding:8px 0 10px;gap:5px}
+  .rail-tail{padding:8px 0 10px;gap:9px}
 }
 
 @media (max-height:740px){
@@ -1042,7 +1042,8 @@ body.onair .rail-onair .lamp{
 
 .rail-tools{
   width:34px;height:34px;border:2px solid #cfc4a6;border-radius:50%;color:#cfc4a6;background:none;
-  font-size:15px;line-height:1;padding:0;cursor:pointer;flex:0 0 auto;
+  display:flex;align-items:center;justify-content:center;flex:0 0 auto;
+  padding:0;cursor:pointer;
   transition:transform .25s var(--bezier),color .2s,border-color .2s,background .2s;
 }
 .rail-tools:hover{transform:rotate(-12deg) scale(1.14);color:var(--cream);border-color:var(--cream)}
