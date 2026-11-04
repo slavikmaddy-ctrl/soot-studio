@@ -151,6 +151,7 @@ app.use('/css', express.static(path.join(here, 'css')));
 app.use('/js', express.static(path.join(here, 'js')));
 app.use('/assets', express.static(path.join(here, 'assets')));
 app.get('/robots.txt', (req, res) => res.sendFile(path.join(here, 'robots.txt')));
+app.get('/favicon.ico', (req, res) => res.sendFile(path.join(here, 'assets', 'favicon.ico')));
 app.get('/sitemap.xml', (req, res) => res.sendFile(path.join(here, 'sitemap.xml')));
 
 const PAGES = ['index.html', 'work.html', 'about.html', 'capabilities.html', 'contact.html', 'film.html', '404.html'];
