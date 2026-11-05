@@ -279,18 +279,17 @@
   if (form) form.addEventListener('submit', (e) => {
     e.preventDefault();
     if (!form.reportValidity()) return;
-    const data = {
-      name: form.elements.name.value,
-      email: form.elements.email.value,
-      body: (form.elements.kind && form.elements.kind.value ? '[' + form.elements.kind.value + '] ' : '') + form.elements.message.value
-    };   // captured before the reset
+    const orderDesk = form.dataset.endpoint === '/api/order';
+    const data = orderDesk
+      ? { name: form.elements.name.value, email: form.elements.email.value, kind: form.elements.kind ? form.elements.kind.value : 'SOMETHING ELSE', body: form.elements.message.value }
+      : { name: form.elements.name.value, email: form.elements.email.value, body: (form.elements.kind && form.elements.kind.value ? '[' + form.elements.kind.value + '] ' : '') + form.elements.message.value };   // captured before the reset
     const ok = $('#tgOk'); ok.hidden = false;
     cue('parry');
     document.body.classList.add('reel-shake');
     setTimeout(() => document.body.classList.remove('reel-shake'), 380);
     form.reset();
     setTimeout(() => { ok.hidden = true; }, 6000);
-    fetch('/api/wire', {
+    fetch(form.dataset.endpoint || '/api/wire', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data),
@@ -569,6 +568,43 @@
       pl.innerHTML = 'EXHIBIT №' + (no < 10 ? '0' + no : no) + ' · SHELF B' + no +
         '<b>THE SOOT VAULT</b>RESTORED PRINTS DEPT';
     }
+
+    // bravo — the vault desk in postgres: catalog + applause counter; the sheet above still paints instantly from the house copy
+    (async () => {
+      const btn = $('#caseBravo');
+      if (!btn) return;
+      try {
+        const r = await fetch('/api/films');
+        if (!r.ok) return;
+        const rows = await r.json();
+        const row = Array.isArray(rows) && rows.find((x) => x && x.slug === slug);
+        if (!row) return;                    // not filed in the vault yet — the button stays hidden
+        let bravoed = false;
+        try { bravoed = (LS.get('soot-bravo', []) || []).indexOf(slug) !== -1; } catch (e) {}
+        const paint = (n, ok) => { btn.innerHTML = 'BRAVO <i>· ' + n + (ok ? ' ✓' : '') + '</i>'; };
+        paint(row.bravo || 0, bravoed);
+        btn.hidden = false;
+        if (bravoed) { btn.disabled = true; return; }
+        btn.addEventListener('click', async () => {
+          if (btn.disabled) return;
+          btn.disabled = true;
+          try {
+            let sid = LS.get('soot-session', '');
+            if (!/^[a-zA-Z0-9-]{8,64}$/.test(sid)) {
+              sid = window.crypto && crypto.randomUUID ? crypto.randomUUID() : 's' + Date.now() + '-' + Math.floor(Math.random() * 1e9);
+              LS.set('soot-session', sid);
+            }
+            const r2 = await fetch('/api/films/' + slug + '/like', {
+              method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ sid })
+            });
+            if (!r2.ok) throw new Error('bravo jammed');
+            const j = await r2.json();
+            paint(j.bravo || (row.bravo || 0) + 1, true);
+            try { const arr = LS.get('soot-bravo', []) || []; arr.push(slug); LS.set('soot-bravo', arr); } catch (e) {}
+          } catch (e) { btn.disabled = false; }
+        });
+      } catch (e) {}
+    })();
   }
     $$('.film[data-film]').forEach(card => {
     const slug = card.dataset.film;

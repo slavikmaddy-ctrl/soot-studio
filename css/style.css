@@ -441,6 +441,15 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:inherit}
 .case-frame img,.case-frame video{width:100%;height:100%;object-fit:cover;display:block}
 .case-player{width:100%;height:100%;border:0;background:var(--ink)}
 .case-row{display:flex;align-items:center;gap:12px;margin:16px 0 20px;font-size:14px}
+.bravo{
+  flex:0 0 auto;font:700 12px "Courier Prime",monospace;letter-spacing:.18em;
+  border:3px solid var(--ink);background:var(--cream);color:var(--ink);
+  padding:10px 14px 8px;box-shadow:var(--sh);cursor:pointer;transform:rotate(-1deg);
+}
+.bravo i{font-style:normal;color:var(--red)}
+.bravo:disabled{cursor:default;opacity:.85}
+.bravo:not(:disabled):hover{background:var(--red);color:var(--cream)}
+.bravo:not(:disabled):hover i{color:var(--cream)}
 .case-body p{margin-bottom:14px;font-size:14px}
 .case-body h4{font-family:"Bevan",serif;font-size:14px;letter-spacing:.12em;margin:18px 0 8px;color:var(--red)}
 .case-body ul{list-style:none;padding-left:2px}

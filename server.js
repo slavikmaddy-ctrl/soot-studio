@@ -34,9 +34,39 @@ CREATE TABLE IF NOT EXISTS parry_scores (
   name varchar(40) NOT NULL DEFAULT 'A GUEST',
   score int NOT NULL CHECK (score >= 0),
   created_at timestamptz NOT NULL DEFAULT now()
+);
+CREATE TABLE IF NOT EXISTS orders (
+  id serial PRIMARY KEY,
+  name varchar(40) NOT NULL,
+  email varchar(120) NOT NULL DEFAULT '',
+  email_enc text NOT NULL DEFAULT '',
+  kind varchar(60) NOT NULL DEFAULT 'SOMETHING ELSE',
+  body varchar(500) NOT NULL,
+  status varchar(20) NOT NULL DEFAULT 'NEW',
+  created_at timestamptz NOT NULL DEFAULT now()
+);
+CREATE TABLE IF NOT EXISTS films (
+  id serial PRIMARY KEY,
+  slug varchar(40) UNIQUE NOT NULL,
+  title varchar(80) NOT NULL,
+  studio varchar(80) NOT NULL DEFAULT '',
+  year varchar(20) NOT NULL DEFAULT '',
+  meta varchar(120) NOT NULL DEFAULT '',
+  tick varchar(120) NOT NULL DEFAULT '',
+  yt_id varchar(24),
+  img_url varchar(200) NOT NULL DEFAULT '',
+  sort_order int NOT NULL DEFAULT 0,
+  created_at timestamptz NOT NULL DEFAULT now()
+);
+CREATE TABLE IF NOT EXISTS film_likes (
+  id serial PRIMARY KEY,
+  film_id int NOT NULL REFERENCES films(id) ON DELETE CASCADE,
+  session_id varchar(64) NOT NULL,
+  created_at timestamptz NOT NULL DEFAULT now(),
+  UNIQUE (film_id, session_id)
 );`;
 pool.query(SCHEMA)
-  .then(() => console.log('[soot] the ledger stands — postgres answers, three tables ready'))
+  .then(() => console.log('[soot] the ledger stands — postgres answers, six tables ready'))
   .catch((e) => {
     if (e.code === '42501') console.log('[soot] the ledger was already furnished — this desk may only read and write');
     else console.error('[soot] postgres spoke:', e.message);
@@ -139,6 +169,43 @@ app.post('/api/parry', rate(6, 60_000), async (req, res) => {
     await pool.query('INSERT INTO parry_scores (name, score) VALUES ($1, $2)', ['A GUEST', score]);
     const { rows } = await pool.query('SELECT coalesce(max(score), 0)::int AS best FROM parry_scores');
     res.json({ ok: true, best: rows[0].best });
+  } catch (e) { vaultDown(res, e); }
+});
+
+app.get('/api/films', async (req, res) => {
+  try {
+    const { rows } = await pool.query(
+      'SELECT f.slug, f.title, f.studio, f.year, f.meta, f.tick, f.yt_id AS yt, f.img_url AS img, count(l.id)::int AS bravo ' +
+      'FROM films f LEFT JOIN film_likes l ON l.film_id = f.id ' +
+      'GROUP BY f.id ORDER BY f.sort_order, f.id');
+    res.json(rows);
+  } catch (e) { vaultDown(res, e); }
+});
+app.post('/api/films/:slug/like', rate(6, 60_000), async (req, res) => {
+  const slug = clip(req.params.slug, 40);
+  const sid = clip(req.body.sid, 64);
+  if (!/^[a-zA-Z0-9-]{8,64}$/.test(sid)) return res.status(400).json({ ok: false });
+  try {
+    const hit = await pool.query('SELECT id FROM films WHERE slug = $1', [slug]);
+    if (!hit.rows[0]) return res.status(404).json({ ok: false });
+    await pool.query('INSERT INTO film_likes (film_id, session_id) VALUES ($1, $2) ON CONFLICT DO NOTHING', [hit.rows[0].id, sid]);
+    const { rows } = await pool.query('SELECT count(*)::int AS bravo FROM film_likes WHERE film_id = $1', [hit.rows[0].id]);
+    res.json({ ok: true, bravo: rows[0].bravo });
+  } catch (e) { vaultDown(res, e); }
+});
+
+app.post('/api/order', rate(3, 60_000), async (req, res) => {
+  const name = clip(req.body.name, 40) || 'A GUEST';
+  const email = clip(req.body.email, 120);
+  const kind = clip(req.body.kind, 60) || 'SOMETHING ELSE';
+  const body = clip(req.body.body, 500);
+  if (body.length < 2) return res.status(400).json({ ok: false, error: 'an order needs words' });
+  const okEmail = /^[^\s@]{1,64}@[^\s@]+\.[^\s@]{2,}$/.test(email) ? email : '';
+  try {
+    const { rows } = await pool.query(
+      'INSERT INTO orders (name, email, email_enc, kind, body) VALUES ($1, $2, $3, $4, $5) RETURNING id, kind, created_at',
+      [name, okEmail ? maskEmail(okEmail) : '', sealEmail(okEmail), kind, body]);
+    res.status(201).json({ ok: true, order: rows[0] });
   } catch (e) { vaultDown(res, e); }
 });
 
