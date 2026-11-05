@@ -9,3 +9,6 @@ node_modules/
 .server-pid
 qa-api.ps1
 .neon
+# personal documents, never publish
+*.doc
+*.docx
