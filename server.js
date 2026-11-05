@@ -154,7 +154,7 @@ app.get('/robots.txt', (req, res) => res.sendFile(path.join(here, 'robots.txt'))
 app.get('/favicon.ico', (req, res) => res.sendFile(path.join(here, 'assets', 'favicon.ico')));
 app.get('/sitemap.xml', (req, res) => res.sendFile(path.join(here, 'sitemap.xml')));
 
-const PAGES = ['index.html', 'work.html', 'about.html', 'capabilities.html', 'contact.html', 'film.html', '404.html'];
+const PAGES = ['index.html', 'work.html', 'about.html', 'capabilities.html', 'process.html', 'order.html', 'contact.html', 'film.html', '404.html'];
 app.get('/', (req, res) => res.sendFile(path.join(here, 'html', 'index.html')));
 PAGES.forEach((p) => app.get('/' + p, (req, res) => res.sendFile(path.join(here, 'html', p))));
 app.get('/html/:page', (req, res) => {

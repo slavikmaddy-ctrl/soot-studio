@@ -467,7 +467,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:inherit}
   letter-spacing:.2em;margin-top:4px;color:var(--red);
 }
 .telegraph label{display:block;margin-bottom:14px;font-size:11px;letter-spacing:.22em}
-.telegraph input,.telegraph textarea{
+.telegraph input,.telegraph textarea,.telegraph select{
   display:block;width:100%;margin-top:6px;padding:10px 12px;
   background:var(--paper);border:2px solid var(--ink);
   font:15px "Special Elite",monospace;color:var(--ink);
@@ -487,7 +487,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:inherit}
   position:absolute;visibility:hidden;pointer-events:none;z-index:-1;
   white-space:pre-wrap;overflow:visible;
 }
-.telegraph input:focus,.telegraph textarea:focus{
+.telegraph input:focus,.telegraph textarea:focus,.telegraph select:focus{
   outline:3px solid var(--red);outline-offset:2px;background:#fbf7ea;
 }
 .tg-send{width:100%}
@@ -1078,4 +1078,40 @@ a,button,[role="button"],.film-frame,.film-case,.faq-q,.rail-pinky,.rail-tools{c
   .rail-tail{padding-bottom:calc(14px + env(safe-area-inset-bottom,0px))}
   .film-scrub{display:none}
 }
+
+.steps{display:flex;flex-direction:column;gap:14px;max-width:680px;margin-top:28px;position:relative;z-index:3}
+.step{
+  border:3px solid var(--ink);background:var(--cream);box-shadow:var(--sh);
+  padding:16px 18px 14px;display:flex;gap:16px;align-items:flex-start;
+}
+.step:nth-child(odd){transform:rotate(-.6deg)}
+.step:nth-child(even){transform:rotate(.6deg)}
+.step .no{font-family:"Bevan",serif;font-size:26px;line-height:1;color:var(--red);flex:0 0 auto;min-width:34px}
+.step h4{font-family:"Bevan",serif;font-size:14px;letter-spacing:.12em;margin:2px 0 6px;text-transform:uppercase}
+.step p{font-size:13px;line-height:1.55}
+.guarants{display:flex;flex-wrap:wrap;gap:12px;margin-top:22px;max-width:680px;position:relative;z-index:3}
+.guarants .case-chip{flex:1 1 180px}
+
+.tariffs{display:grid;grid-template-columns:repeat(3,minmax(200px,1fr));gap:24px;margin-top:30px;max-width:1020px;position:relative;z-index:3}
+.tariff{
+  border:3px solid var(--ink);background:var(--cream);box-shadow:var(--sh);
+  padding:22px 18px 18px;position:relative;display:flex;flex-direction:column;gap:10px;
+}
+.tariff:nth-child(1){transform:rotate(-1.2deg)}
+.tariff:nth-child(2){transform:rotate(.9deg) translateY(10px)}
+.tariff:nth-child(3){transform:rotate(-.6deg)}
+.tariff .tn{font-family:"Bevan",serif;font-size:16px;letter-spacing:.08em;text-transform:uppercase}
+.tariff .tp{font-family:"Bevan",serif;font-size:23px;line-height:1;color:var(--red)}
+.tariff ul{list-style:none;margin:4px 0 0}
+.tariff li{font-size:12.5px;line-height:1.55;padding-left:16px;position:relative;margin-bottom:7px}
+.tariff li::before{content:"✦";position:absolute;left:0;top:2px;font-size:10px;color:var(--teal)}
+.tariff .hot{
+  position:absolute;top:-13px;right:10px;font-style:normal;
+  background:var(--red);color:var(--cream);
+  font:700 10px "Courier Prime",monospace;letter-spacing:.18em;
+  padding:5px 10px 3px;transform:rotate(3deg);box-shadow:2px 2px 0 rgba(33,26,18,.35);
+}
+.order-grid{display:grid;grid-template-columns:minmax(300px,460px) minmax(230px,1fr);gap:36px;margin-top:34px;align-items:start;position:relative;z-index:3}
+@media (max-width:1000px){.order-grid{grid-template-columns:1fr}}
+@media (max-width:760px){.tariffs{grid-template-columns:1fr;max-width:440px}}
 input,textarea,select{cursor:text}

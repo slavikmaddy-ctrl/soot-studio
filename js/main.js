@@ -5,7 +5,7 @@
   const $  = (s, c) => (c || document).querySelector(s);
   const $$ = (s, c) => Array.from((c || document).querySelectorAll(s));
 
-  const PAGE_URLS = ['index.html', 'work.html', 'about.html', 'capabilities.html', 'contact.html'];
+  const PAGE_URLS = ['index.html', 'work.html', 'about.html', 'capabilities.html', 'process.html', 'order.html', 'contact.html'];
   const rebound = document.body.dataset.page | 0;          // 0..4
   const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
   // site entry detector: the first page load of this browsing session plays
@@ -279,7 +279,11 @@
   if (form) form.addEventListener('submit', (e) => {
     e.preventDefault();
     if (!form.reportValidity()) return;
-    const data = { name: form.elements.name.value, email: form.elements.email.value, body: form.elements.message.value };   // captured before the reset
+    const data = {
+      name: form.elements.name.value,
+      email: form.elements.email.value,
+      body: (form.elements.kind && form.elements.kind.value ? '[' + form.elements.kind.value + '] ' : '') + form.elements.message.value
+    };   // captured before the reset
     const ok = $('#tgOk'); ok.hidden = false;
     cue('parry');
     document.body.classList.add('reel-shake');
@@ -656,7 +660,7 @@
 
   const STAMP_DEFS = [
     ['p0', 'MAIN PAGE'], ['p1', 'SHOWREEL'], ['p2', 'THE TEAM'],
-    ['p3', 'INKWELL'], ['p4', 'TELEGRAPH'],
+    ['p3', 'INKWELL'], ['p4', 'ASSEMBLY'], ['p5', 'PRICE LIST'], ['p6', 'TELEGRAPH'],
     ['parry', 'PARRY!'], ['wire', 'WIRE SENT'],
     ['proj', 'PROJECTOR'], ['whack', 'WHACKER']
   ];
@@ -857,11 +861,12 @@
     if (!el || reduced) return;
     const m = el.textContent.match(/^(REEL\s+)(\d+)(.*)$/);
     if (!m) return;
-    let cur = (+m[2] + 2) % 5 || 5, flips = 0;
+    const N = PAGE_URLS.length;
+    let cur = (+m[2] + 2) % N || N, flips = 0;
     const iv = setInterval(() => {
-      cur = cur % 5 + 1;
+      cur = cur % N + 1;
       el.innerHTML = m[1] + cur + '<i>' + m[3] + '</i>';
-      if (++flips >= 5) { clearInterval(iv); el.innerHTML = m[1] + m[2] + '<i>' + m[3] + '</i>'; }
+      if (++flips >= N) { clearInterval(iv); el.innerHTML = m[1] + m[2] + '<i>' + m[3] + '</i>'; }
     }, 64);
   })();
 
