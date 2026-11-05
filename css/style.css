@@ -1089,6 +1089,18 @@ a,button,[role="button"],.film-frame,.film-case,.faq-q,.rail-pinky,.rail-tools{c
 .step .no{font-family:"Bevan",serif;font-size:26px;line-height:1;color:var(--red);flex:0 0 auto;min-width:34px}
 .step h4{font-family:"Bevan",serif;font-size:14px;letter-spacing:.12em;margin:2px 0 6px;text-transform:uppercase}
 .step p{font-size:13px;line-height:1.55}
+.step > div{flex:1 1 auto}
+.step .mascot{flex:0 0 auto;width:74px;align-self:center;position:relative}
+.step .mascot img{width:100%;height:auto;display:block;filter:drop-shadow(3px 3px 0 rgba(33,26,18,.16))}
+.step:nth-child(odd) .mascot{transform:rotate(4deg)}
+.step:nth-child(even) .mascot{transform:rotate(-4deg)}
+.proc-banner{position:relative;margin:26px 0 4px;max-width:680px;z-index:3;transform:rotate(-1.2deg)}
+.proc-banner img{width:100%;display:block;border:3px solid var(--ink);box-shadow:var(--sh)}
+.proc-banner figcaption{
+  font-size:11.5px;line-height:1.5;color:#5a4f3d;padding:8px 2px 0;
+}
+.proc-banner figcaption i{font-style:normal;color:var(--red);font-weight:700}
+.proc-boom{position:absolute;top:-20px;right:-14px;width:46px;height:46px}
 .guarants{display:flex;flex-wrap:wrap;gap:12px;margin-top:22px;max-width:680px;position:relative;z-index:3}
 .guarants .case-chip{flex:1 1 180px}
 
@@ -1114,4 +1126,9 @@ a,button,[role="button"],.film-frame,.film-case,.faq-q,.rail-pinky,.rail-tools{c
 .order-grid{display:grid;grid-template-columns:minmax(300px,460px) minmax(230px,1fr);gap:36px;margin-top:34px;align-items:start;position:relative;z-index:3}
 @media (max-width:1000px){.order-grid{grid-template-columns:1fr}}
 @media (max-width:760px){.tariffs{grid-template-columns:1fr;max-width:440px}}
+@media (max-width:640px){
+  .step{gap:10px;padding:13px 12px 12px}
+  .step .mascot{width:52px}
+  .proc-banner{margin-top:20px}
+}
 input,textarea,select{cursor:text}
