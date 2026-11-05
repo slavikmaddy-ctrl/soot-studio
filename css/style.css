@@ -1094,13 +1094,27 @@ a,button,[role="button"],.film-frame,.film-case,.faq-q,.rail-pinky,.rail-tools{c
 .step .mascot img{width:100%;height:auto;display:block;filter:drop-shadow(3px 3px 0 rgba(33,26,18,.16))}
 .step:nth-child(odd) .mascot{transform:rotate(4deg)}
 .step:nth-child(even) .mascot{transform:rotate(-4deg)}
-.proc-banner{position:relative;margin:26px 0 4px;max-width:680px;z-index:3;transform:rotate(-1.2deg)}
-.proc-banner img{width:100%;display:block;border:3px solid var(--ink);box-shadow:var(--sh)}
-.proc-banner figcaption{
-  font-size:11.5px;line-height:1.5;color:#5a4f3d;padding:8px 2px 0;
+.modelsheet{
+  position:relative;max-width:680px;margin:26px 0 4px;z-index:3;transform:rotate(-.8deg);
+  border:3px solid var(--ink);background:var(--paper);box-shadow:var(--sh);padding:14px 16px 12px;
 }
-.proc-banner figcaption i{font-style:normal;color:var(--red);font-weight:700}
-.proc-boom{position:absolute;top:-20px;right:-14px;width:46px;height:46px}
+.ms-head{display:flex;align-items:baseline;gap:12px;border-bottom:2px dashed rgba(33,26,18,.35);padding:0 130px 8px 0;margin-bottom:12px;position:relative}
+.ms-head b{font-family:"Bevan",serif;font-size:14px;letter-spacing:.14em;white-space:nowrap}
+.ms-head span{font:11px "Special Elite",monospace;letter-spacing:.06em;color:#5a4f3d}
+.ms-stamp{
+  position:absolute;right:0;top:-6px;transform:rotate(6deg);
+  font:700 8px/1.35 "Courier Prime",monospace;letter-spacing:.16em;text-align:center;
+  color:var(--red);border:2px solid var(--red);padding:4px 6px 3px;opacity:.7;
+}
+.ms-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px 10px}
+.ms-grid figure{margin:0;display:flex;flex-direction:column;align-items:center;justify-content:flex-end}
+.ms-grid img{
+  max-height:74px;width:auto;max-width:100%;
+  filter:grayscale(1) sepia(.32) contrast(1.12) brightness(1.02);
+  mix-blend-mode:multiply;transition:filter .25s;
+}
+@media (hover:hover) and (pointer:fine){.ms-grid figure:hover img{filter:none}}
+.ms-grid figcaption{font:9px "Special Elite",monospace;letter-spacing:.12em;color:#5a4f3d;margin-top:5px;text-transform:uppercase}
 .guarants{display:flex;flex-wrap:wrap;gap:12px;margin-top:22px;max-width:680px;position:relative;z-index:3}
 .guarants .case-chip{flex:1 1 180px}
 
@@ -1129,6 +1143,13 @@ a,button,[role="button"],.film-frame,.film-case,.faq-q,.rail-pinky,.rail-tools{c
 @media (max-width:640px){
   .step{gap:10px;padding:13px 12px 12px}
   .step .mascot{width:52px}
-  .proc-banner{margin-top:20px}
+  .modelsheet{padding:11px 10px 9px}
+  .ms-head{flex-wrap:wrap;gap:4px 8px;padding-right:0}
+  .ms-head span{flex:1 1 100%}
+  .ms-stamp{display:none}
+  .ms-head b{font-size:12px}
+  .ms-head span{font-size:9.5px}
+  .ms-grid{gap:9px 6px}
+  .ms-grid img{max-height:58px}
 }
 input,textarea,select{cursor:text}
